@@ -27,4 +27,13 @@ class MajorStoreRequest extends FormRequest
             'description' => ['sometimes'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Nama harus diisi',
+            'code.required' => 'Kode harus diisi',
+            'code.unique' => 'Kode sudah digunakan',
+        ];
+    }
 }

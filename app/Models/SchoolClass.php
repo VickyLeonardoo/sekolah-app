@@ -13,5 +13,8 @@ class SchoolClass extends Model
 
     protected $guarded = ['id'];
 
+    public function major(){
+        return $this->belongsTo(Major::class);
+    }
 
 }

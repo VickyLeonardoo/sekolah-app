@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ClassStoreRequest;
+use App\Models\Major;
 use App\Models\SchoolClass;
 use Illuminate\Http\Request;
+use App\Http\Requests\ClassStoreRequest;
 
 class SchoolClassController extends Controller
 {
@@ -24,7 +25,10 @@ class SchoolClassController extends Controller
      */
     public function create()
     {
-        return view('class.create');
+        $majors = Major::all();
+        return view('class.create',[
+            'majors' => $majors
+        ]);
     }
 
     /**

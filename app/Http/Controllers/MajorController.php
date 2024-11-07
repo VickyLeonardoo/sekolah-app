@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MajorStoreRequest;
 use App\Models\Major;
 use Illuminate\Http\Request;
 
@@ -29,9 +30,13 @@ class MajorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(MajorStoreRequest $request)
     {
-        //
+
+        $data = $request->validated();
+        $major = Major::create($data);
+
+        return redirect()->route('major.index')->with('success','Berhasil menambah data jurusan');
     }
 
     /**
@@ -40,6 +45,9 @@ class MajorController extends Controller
     public function show(Major $major)
     {
         //
+        return view('major.show', [
+            'major' => $major
+        ]);
     }
 
     /**

@@ -22,7 +22,8 @@ class ClassStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required']
+            'name' => ['required'],
+            'major_id' => ['required']
         ];
     }
 }

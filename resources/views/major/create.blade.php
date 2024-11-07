@@ -53,7 +53,7 @@
                 </div>
             @endif
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-10 flex flex-col gap-y-5">
-                <form method="POST" action="{{ route('teacher.store') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('major.store') }}" enctype="multipart/form-data">
                     @csrf
                     {{-- name, email, password, phone, identity_no --}}
                     <div class="mt-4">
@@ -87,11 +87,4 @@
             </div>
         </div>
     </div>
-        
-    <script>
-        document.getElementById('photo').addEventListener('change', function(e) {
-            const fileName = e.target.files[0] ? e.target.files[0].name : 'Tidak ada file yang dipilih';
-            e.target.parentElement.querySelector('.file-name').textContent = fileName;
-        });
-    </script>
 </x-app-layout>
