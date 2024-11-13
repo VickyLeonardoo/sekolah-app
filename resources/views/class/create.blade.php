@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Add Department') }}
             </h2>
-            <a href="{{ route('class.index') }}"
+            <a href="{{ route('school-class.index') }}"
                 class="font-bold py-1 px-8 bg-indigo-700 text-white rounded-full flex items-center">
                 <i class="fas fa-arrow-left mr-2"></i>
                 Kembali
@@ -53,7 +53,7 @@
                 </div>
             @endif
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-10 flex flex-col gap-y-5">
-                <form method="POST" action="{{ route('class.store') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('school-class.store') }}" enctype="multipart/form-data">
                     @csrf
                     {{-- name, email, password, phone, identity_no --}}
                     <div class="mt-4">
@@ -65,14 +65,17 @@
 
                     <div class="mt-4">
                         <x-input-label for="major_id" :value="__('Jurusan')" />
-                        <select id="major_id" name="major_id" class="block mt-1 w-full" required>
-                            <option value="">{{ __('Pilih Jurusan') }}</option>
+                        <select name="major_id" id="major_id" class="rounded-lg pl-3 w-full border border-slate-300">
+                            <option value="" selected disabled>{{ __('Pilih Jurusan') }}</option>
                             @foreach ($majors as $major)
                                 <option value="{{ $major->id }}">{{ $major->name }}</option>
                             @endforeach
                         </select>
+
                         <x-input-error :messages="$errors->get('major_id')" class="mt-2" />
                     </div>
+
+
                     <div class="flex items-center justify-end mt-4">
 
                         <button type="submit" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">

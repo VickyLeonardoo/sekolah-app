@@ -22,13 +22,13 @@
             @endif
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-10 flex flex-col gap-y-5">
                 <div class="flex flex-col md:flex-row justify-between items-center mb-6">
-                    <a href="{{ route('class.create') }}" class="bg-indigo-600 hover:bg-indigo-300 text-white font-bold py-2 px-4 rounded-lg transition duration-300 flex items-center justify-center">
+                    <a href="{{ route('school-class.create') }}" class="bg-indigo-600 hover:bg-indigo-300 text-white font-bold py-2 px-4 rounded-lg transition duration-300 flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                         </svg>
                         Tambah Data Kelas
                     </a>
-                    <form method="GET" action="{{ route('class.index') }}" class="flex w-full md:w-auto">
+                    <form method="GET" action="{{ route('school-class.index') }}" class="flex w-full md:w-auto">
                         <input type="text" name="search" placeholder="Cari data kelas"
                             class="rounded-l-full w-full md:w-64 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             value="{{ request('search') }}">
@@ -45,10 +45,13 @@
                 <table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
                     <thead>
                         <tr class="text-left">
-                            <th class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs" style="width: 70%;">
+                            <th class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs" style="width: 40%;">
                                 Nama
                             </th>
-                            <th class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs" style="width: 30%;">
+                            <th class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs" style="width: 40%;">
+                                Jurusan
+                            </th>
+                            <th class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs" style="width: 20%;">
                                 Action
                             </th>
                         </tr>
@@ -56,14 +59,15 @@
                     <tbody id="users-table-body">
                         @forelse ($classes as $class)
                             <tr>
-                                <td class="border-b border-gray-200 px-6 py-4" style="width: 70%;">{{ $class->name }}</td>
-                                <td class="border-b border-gray-200 px-6 py-4" style="width: 30%;">
-                                    <a href="{{ route('class.show', $class) }}" class="font-bold py-2 px-4 bg-indigo-700 hover:bg-indigo-400 text-white rounded-lg">View</a>
+                                <td class="border-b border-gray-200 px-6 py-4" style="width: 40%;">{{ $class->name }}</td>
+                                <td class="border-b border-gray-200 px-6 py-4" style="width: 40%;">{{ $class->major->name }}</td>
+                                <td class="border-b border-gray-200 px-6 py-4" style="width: 20%;">
+                                    <a href="{{ route('school-class.show', $class) }}" class="font-bold py-2 px-4 bg-indigo-700 hover:bg-indigo-400 text-white rounded-lg">Lihat</a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="2" class="text-center border-b border-gray-200 px-6 py-4">No data found</td>
+                                <td colspan="3" class="text-center border-b border-gray-200 px-6 py-4">Data tidak ditemukan</td>
                             </tr>
                         @endforelse
                     </tbody>

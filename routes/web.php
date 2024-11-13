@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\MajorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SchoolClassController;
@@ -31,7 +32,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('teacher', TeacherController::class)
         ->middleware('role:superadmin');
 
-    Route::resource('class', SchoolClassController::class)
+    Route::resource('school-class', SchoolClassController::class)
+        ->middleware('role:superadmin');
+
+    Route::resource('academic-year', AcademicYearController::class)
         ->middleware('role:superadmin');
 
 });

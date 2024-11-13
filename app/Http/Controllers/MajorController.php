@@ -11,9 +11,23 @@ class MajorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $majors = Major::paginate(10);
+        $majors = Major::query(); // Inisialisasi query
+
+        if ($request->has('search')) {
+            $query = $request->search;
+            // Tambahkan pencarian pada kolom 'code' dan 'name'
+            $majors = $majors->where(function ($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%")
+                ->orWhere('code', 'like', "%{$query}%");
+
+            });
+        }
+
+        // Pagination 10 item per halaman
+        $majors = $majors->paginate(10);
+
         return view('major.index',[
             'majors' => $majors
         ]);
@@ -56,6 +70,9 @@ class MajorController extends Controller
     public function edit(Major $major)
     {
         //
+        return view('major.edit', [
+            'major' => $major
+        ]);
     }
 
     /**

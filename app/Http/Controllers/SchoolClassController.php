@@ -6,16 +6,33 @@ use App\Models\Major;
 use App\Models\SchoolClass;
 use Illuminate\Http\Request;
 use App\Http\Requests\ClassStoreRequest;
+use App\Http\Requests\ClassUpdateRequest;
 
 class SchoolClassController extends Controller
-{
+{ 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $classes = SchoolClass::paginate(10);
-        return view('class.index',[
+        // Initialize query with eager loading of 'major' relationship
+        $classes = SchoolClass::with('major');
+
+        if ($request->has('search')) {
+            $query = $request->search;
+            // Add search conditions for 'name' in SchoolClass and 'name' in Major
+            $classes = $classes->where(function ($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%")
+                ->orWhereHas('major', function ($q) use ($query) {
+                    $q->where('name', 'like', "%{$query}%");
+                });
+            });
+        }
+
+        // Paginate with 10 items per page
+        $classes = $classes->paginate(10);
+
+        return view('class.index', [
             'classes' => $classes,
         ]);
     }
@@ -40,7 +57,7 @@ class SchoolClassController extends Controller
 
         $class = SchoolClass::create($data);
 
-        return redirect()->route('class.index')->with('success','Data kelas berhasil ditambahkan');
+        return redirect()->route('school-class.index')->with('success','Data kelas berhasil ditambahkan');
     }
 
     /**
@@ -48,7 +65,9 @@ class SchoolClassController extends Controller
      */
     public function show(SchoolClass $schoolClass)
     {
-        //
+        return view('class.show', [
+            'class' => $schoolClass
+        ]);
     }
 
     /**
@@ -56,15 +75,23 @@ class SchoolClassController extends Controller
      */
     public function edit(SchoolClass $schoolClass)
     {
-        //
+        $majors = Major::all();
+        return view('class.edit', [
+            'class' => $schoolClass,
+            'majors' => $majors
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SchoolClass $schoolClass)
+    public function update(ClassUpdateRequest $request, SchoolClass $schoolClass)
     {
-        //
+        $data = $request->validated();
+
+        $schoolClass->update($data);
+
+        return redirect()->route('school-class.show',$schoolClass)->with('success','Data kelas berhasil diubah');
     }
 
     /**
@@ -72,6 +99,7 @@ class SchoolClassController extends Controller
      */
     public function destroy(SchoolClass $schoolClass)
     {
-        //
+        $schoolClass->delete();
+        return redirect()->route('school-class.index')->with('success','Data kelas berhasil dihapus');
     }
 }

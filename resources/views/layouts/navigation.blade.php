@@ -22,8 +22,11 @@
                     <x-nav-link :href="route('major.index')" :active="request()->routeIs('major*')">
                         {{ __('Jurusan') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('class.index')" :active="request()->routeIs('class*')">
+                    <x-nav-link :href="route('school-class.index')" :active="request()->routeIs('school-class*')">
                         {{ __('Kelas') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('academic-year.index')" :active="request()->routeIs('academic-year*')">
+                        {{ __('Tahun Ajaran') }}
                     </x-nav-link>
                 </div>
             </div>

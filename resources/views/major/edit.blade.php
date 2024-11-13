@@ -59,20 +59,20 @@
                     <div class="mt-4">
                         <x-input-label for="code" :value="__('Kode Jurusan')" />
                         <x-text-input id="code" class="block mt-1 w-full" type="text" name="code"
-                            :value="old('code')" required autofocus autocomplete="code" />
+                            value="{{ $major->code }}" required autofocus autocomplete="code" />
                         <x-input-error :messages="$errors->get('code')" class="mt-2" />
                     </div>
 
                     <div class="mt-4">
                         <x-input-label for="name" :value="__('Nama Jurusan')" />
                         <x-text-input id="name" class="block mt-1 w-full" type="text" name="name"
-                            :value="old('name')" required autofocus autocomplete="name" />
+                            value="{{ $major->name }}" required autofocus autocomplete="name" />
                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
 
                     <div class="mt-4">
                         <x-input-label for="description" :value="__('Description (Opsional)')" />
-                        <textarea id="description" name="description" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="3">{{ old('description') }}</textarea>
+                        <textarea id="description" name="description" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="3">{{ $major->description }}</textarea>
                         <x-input-error :messages="$errors->get('answerText')" class="mt-2" />
                     </div>
 
