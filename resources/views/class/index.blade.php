@@ -45,10 +45,13 @@
                 <table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
                     <thead>
                         <tr class="text-left">
-                            <th class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs" style="width: 40%;">
+                            <th class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs" style="width: 10%;">
+                                Jenjang
+                            </th>
+                            <th class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs" style="width: 35%;">
                                 Nama
                             </th>
-                            <th class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs" style="width: 40%;">
+                            <th class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs" style="width: 35%;">
                                 Jurusan
                             </th>
                             <th class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs" style="width: 20%;">
@@ -58,9 +61,10 @@
                     </thead>
                     <tbody id="users-table-body">
                         @forelse ($classes as $class)
-                            <tr>
-                                <td class="border-b border-gray-200 px-6 py-4" style="width: 40%;">{{ $class->name }}</td>
-                                <td class="border-b border-gray-200 px-6 py-4" style="width: 40%;">{{ $class->major->name }}</td>
+                            <tr class="hover:bg-indigo-50">
+                                <td class="border-b border-gray-200 px-6 py-4" style="width: 10%;">{{ $class->grade }}</td>
+                                <td class="border-b border-gray-200 px-6 py-4" style="width: 35%;">{{ $class->name }}</td>
+                                <td class="border-b border-gray-200 px-6 py-4" style="width: 35%;">{{ $class->major->name }}</td>
                                 <td class="border-b border-gray-200 px-6 py-4" style="width: 20%;">
                                     <a href="{{ route('school-class.show', $class) }}" class="font-bold py-2 px-4 bg-indigo-700 hover:bg-indigo-400 text-white rounded-lg">Lihat</a>
                                 </td>

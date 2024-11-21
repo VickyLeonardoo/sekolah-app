@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Major;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Imports\StudentsImport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StudentStoreRequest;
 use App\Http\Requests\StudentUpdateRequest;
@@ -113,6 +115,46 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
-        //
+        $student->delete();
+        return redirect()->route('student.index')->with('success','Data siswa berhasil dihapus');
+    }
+
+    public function show_import(){
+        return view('student.import');
+    }
+
+    public function process_import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required',
+        ]);
+
+        $checkExtension =  $request->file('file')->getClientOriginalExtension();
+        if ($checkExtension != 'csv' && $checkExtension != 'xlsx') {
+            return redirect()->back()->withErrors('Format file salah, periksa format file yang kamu masukkan. Format file yang diizinkan adalah .XLSX/.CSV');
+        }
+        try {
+            // Proses import
+            Excel::import(new StudentsImport, $request->file('file'));
+    
+            return redirect()->back()->with('success', 'Students imported successfully!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Tangkap error Integrity Constraint Violation
+            if ($e->errorInfo[1] == 1062) { // Kode error untuk Duplicate Entry
+                return redirect()->back()->withErrors([
+                    'Import gagal, terdapat NISN yang sama pada data.',
+                ]);
+            }
+    
+            // Tangkap error SQL lainnya
+            return redirect()->back()->withErrors([
+                'Import gagal: ' . $e->getMessage(),
+            ]);
+        } catch (\Throwable $e) {
+            // Tangkap error lainnya
+            return redirect()->back()->withErrors([
+                'Import gagal: ' . $e->getMessage(),
+            ]);
+        }
     }
 }

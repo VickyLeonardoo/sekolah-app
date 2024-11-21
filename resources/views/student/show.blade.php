@@ -5,6 +5,13 @@
                 {{ __('Detail Siswa') }}
             </h2>
             <div class="flex space-x-3">
+                <form action="{{ route('student.destroy',$student) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="mr-4 font-bold py-2 px-4 bg-red-700 text-white rounded-full">
+                        Hapus
+                    </button>
+                </form>
                 <a href="{{ route('student.edit', $student) }}" 
                    class="font-bold py-2 px-4 bg-blue-600 text-white rounded-full flex items-center hover:bg-blue-700 transition">
                     <i class="fas fa-edit mr-2"></i>

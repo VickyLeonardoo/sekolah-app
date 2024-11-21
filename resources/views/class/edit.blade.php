@@ -76,6 +76,19 @@
                         <x-input-error :messages="$errors->get('major_id')" class="mt-2" />
                     </div>
 
+                    <div class="mt-4">
+                        <x-input-label for="grade" :value="__('Jenjang Kelas')" />
+                        <x-text-input id="grade" class="block mt-1 w-full" placeholder="Contoh: 10, 11, 12" type="text" name="grade"
+                            value="{{ $class->grade }}" required autofocus autocomplete="grade" />
+                        <x-input-error :messages="$errors->get('grade')" class="mt-2" />
+                    </div>
+
+                    <div class="mt-4">
+                        <x-input-label for="max_student" :value="__('Maksimal Siswa')" />
+                        <x-text-input id="max_student" class="block mt-1 w-full" type="number" name="max_student"
+                            value="{{ $class->max_student }}" required autofocus autocomplete="max_student" />
+                        <x-input-error :messages="$errors->get('max_student')" class="mt-2" />
+                    </div>
 
                     <div class="flex items-center justify-end mt-4">
 

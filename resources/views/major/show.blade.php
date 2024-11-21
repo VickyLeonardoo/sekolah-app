@@ -13,23 +13,17 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Major Information Section with Edit and Delete Buttons on Right -->
+            <!-- Major Information Section -->
             <div class="bg-white shadow sm:rounded-lg p-6 mb-6 flex justify-between items-center">
-                <!-- Left Side: Major Details -->
                 <div>
                     <h3 class="text-2xl font-semibold text-indigo-700 mb-2">{{ $major->name }}</h3>
                     <p class="text-gray-600"><strong>Kode:</strong> {{ $major->code }}</p>
                     <p class="text-gray-600"><strong>Deskripsi:</strong> {{ $major->description }}</p>
                 </div>
-
-                <!-- Right Side: Edit and Delete Buttons -->
                 <div class="flex space-x-4">
-                    <!-- Edit Major Button -->
                     <a href="{{ route('major.edit', $major->id) }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg flex items-center hover:bg-blue-700">
                         <i class="fas fa-edit mr-2"></i> Edit
                     </a>
-                    
-                    <!-- Delete Major Button -->
                     <form action="{{ route('major.destroy', $major->id) }}" method="POST" onsubmit="return confirm('Apakah anda yakin ingin menghapus jurusan ini?');">
                         @csrf
                         @method('DELETE')
@@ -39,24 +33,59 @@
                     </form>
                 </div>
             </div>
-
+    
             <!-- Related Classes Section -->
             <div class="bg-white shadow sm:rounded-lg p-6">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Daftar Kelas</h3>
-                
+    
                 @if($major->class->isEmpty())
                     <p class="text-gray-600">Belum ada kelas pada jurusan ini.</p>
                 @else
-                    <div class="space-y-4">
-                        @foreach($major->class as $class)
-                            <div class="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg flex justify-between items-center shadow
-                                transform transition duration-200 ease-in-out hover:scale-101">
-                                <span class="text-gray-900 font-medium">{{ $class->name }}</span>
-                                <a href="#" class="text-indigo-600 hover:text-indigo-900 font-semibold">
-                                    Lihat Detail
-                                </a>
-                            </div>
-                        @endforeach
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Grade 10 -->
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">Kelas 10</h4>
+                            @forelse($major->class->filter(fn($class) => $class->grade == 10) as $class)
+                                <div class="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg shadow flex justify-between items-center mt-2">
+                                    <span class="text-gray-900 font-medium">{{ $class->name }}</span>
+                                    <a href="{{ route('school-class.show', $class->id) }}" class="text-indigo-600 hover:text-indigo-900 font-semibold">
+                                        Lihat Detail
+                                    </a>
+                                </div>
+                            @empty
+                                <p class="text-gray-600">Tidak ada kelas.</p>
+                            @endforelse
+                        </div>
+    
+                        <!-- Grade 11 -->
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">Kelas 11</h4>
+                            @forelse($major->class->filter(fn($class) => $class->grade == 11) as $class)
+                                <div class="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg shadow flex justify-between items-center mt-2">
+                                    <span class="text-gray-900 font-medium">{{ $class->name }}</span>
+                                    <a href="{{ route('school-class.show', $class->id) }}" class="text-indigo-600 hover:text-indigo-900 font-semibold">
+                                        Lihat Detail
+                                    </a>
+                                </div>
+                            @empty
+                                <p class="text-gray-600">Tidak ada kelas.</p>
+                            @endforelse
+                        </div>
+    
+                        <!-- Grade 12 -->
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">Kelas 12</h4>
+                            @forelse($major->class->filter(fn($class) => $class->grade == 12) as $class)
+                                <div class="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg shadow flex justify-between items-center mt-2">
+                                    <span class="text-gray-900 font-medium">{{ $class->name }}</span>
+                                    <a href="{{ route('school-class.show', $class->id) }}" class="text-indigo-600 hover:text-indigo-900 font-semibold">
+                                        Lihat Detail
+                                    </a>
+                                </div>
+                            @empty
+                                <p class="text-gray-600">Tidak ada kelas.</p>
+                            @endforelse
+                        </div>
                     </div>
                 @endif
             </div>

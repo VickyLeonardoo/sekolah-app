@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('major_id')->constrained()->onDelete('cascade');
+            $table->integer('grade');
+            $table->integer('max_student');
             $table->softDeletes();
             $table->timestamps();
         });

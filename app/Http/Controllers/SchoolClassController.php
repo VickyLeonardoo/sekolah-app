@@ -7,6 +7,7 @@ use App\Models\SchoolClass;
 use Illuminate\Http\Request;
 use App\Http\Requests\ClassStoreRequest;
 use App\Http\Requests\ClassUpdateRequest;
+use App\Models\AcademicYear;
 
 class SchoolClassController extends Controller
 { 
@@ -65,8 +66,10 @@ class SchoolClassController extends Controller
      */
     public function show(SchoolClass $schoolClass)
     {
+        $academicYears = AcademicYear::paginate(10);
         return view('class.show', [
-            'class' => $schoolClass
+            'class' => $schoolClass,
+            'academicYears' => $academicYears,
         ]);
     }
 

@@ -17,8 +17,9 @@
             <div class="bg-white shadow sm:rounded-lg p-6 mb-6 flex justify-between items-center">
                 <!-- Left Side: Class Details -->
                 <div>
-                    <h3 class="text-2xl font-semibold text-indigo-700 mb-2">{{ $class->name }}</h3>
+                    <h3 class="text-2xl font-semibold text-indigo-700 mb-2">{{ $class->grade }} {{ $class->name }}</h3>
                     <p class="text-gray-600"><strong>Jurusan:</strong> {{ $class->major->name }}</p>
+                    <p class="text-gray-600"><strong>Maksimal Siswa:</strong> {{ $class->max_student }}</p>
                     {{-- <p class="text-gray-600"><strong>Deskripsi:</strong> {{ $major->description }}</p> --}}
                 </div>
 
@@ -41,25 +42,24 @@
             </div>
 
             <!-- Related Classes Section -->
-            {{-- <div class="bg-white shadow sm:rounded-lg p-6">
+            <div class="bg-white shadow sm:rounded-lg p-6">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Daftar Kelas</h3>
                 
-                @if($major->class->isEmpty())
-                    <p class="text-gray-600">Belum ada kelas pada jurusan ini.</p>
-                @else
-                    <div class="space-y-4">
-                        @foreach($major->class as $class)
-                            <div class="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg flex justify-between items-center shadow
-                                transform transition duration-200 ease-in-out hover:scale-101">
-                                <span class="text-gray-900 font-medium">{{ $class->name }}</span>
-                                <a href="#" class="text-indigo-600 hover:text-indigo-900 font-semibold">
-                                    Lihat Detail
-                                </a>
-                            </div>
-                        @endforeach
-                    </div>
-                @endif
-            </div> --}}
+                <div class="space-y-4">
+                    @foreach($academicYears as $academicYear)
+                        <div class="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg flex justify-between items-center shadow
+                            transform transition duration-200 ease-in-out hover:scale-101">
+                            <span class="text-gray-900 font-medium">{{ $academicYear->start_year }}/{{ $academicYear->end_year }}</span>
+                            <a href="#" class="text-indigo-600 hover:text-indigo-900 font-semibold">
+                                Lihat Detail
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="mt-3">
+                    {{ $academicYears->links() }}
+                </div>
+            </div>
         </div>
     </div>
 </x-app-layout>

@@ -24,23 +24,31 @@ Route::middleware('auth')->group(function () {
 
     Route::PUT('teacher/{teacher:id}/update-photo', [TeacherController::class, 'updatePhoto'])
         ->name('teacher.update-photo')
-        ->middleware('role:superadmin');
+        ->middleware('role:superadmin|admin');
 
 
     Route::resource('major', MajorController::class)
-        ->middleware('role:superadmin');
+        ->middleware('role:superadmin|admin');
 
     Route::resource('teacher', TeacherController::class)
-        ->middleware('role:superadmin');
+        ->middleware('role:superadmin|admin');
 
     Route::resource('school-class', SchoolClassController::class)
-        ->middleware('role:superadmin');
+        ->middleware('role:superadmin|admin');
 
     Route::resource('academic-year', AcademicYearController::class)
-        ->middleware('role:superadmin');
+        ->middleware('role:superadmin|admin');
+
+    Route::get('/student/import',[StudentController::class, 'show_import'])
+        ->middleware('role:superadmin|admin')
+        ->name('student.import.show');
+
+    Route::post('/student/import',[StudentController::class, 'process_import'])
+        ->middleware('role:superadmin|admin')
+        ->name('student.import.process');
 
     Route::resource('student', StudentController::class)
-        ->middleware('role:superadmin');
+        ->middleware('role:superadmin|admin');
 
 });
 
