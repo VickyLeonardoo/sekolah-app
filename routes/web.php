@@ -4,6 +4,7 @@ use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\MajorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SchoolClassController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Models\SchoolClass;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,9 @@ Route::middleware('auth')->group(function () {
         ->middleware('role:superadmin');
 
     Route::resource('academic-year', AcademicYearController::class)
+        ->middleware('role:superadmin');
+
+    Route::resource('student', StudentController::class)
         ->middleware('role:superadmin');
 
 });

@@ -11,8 +11,6 @@ class AcademicYear extends Model
     //
     use HasFactory, SoftDeletes;
 
-    protected $guarded = ['id'];
-
-    
+    protected $guarded = ['id'];    
 
 }

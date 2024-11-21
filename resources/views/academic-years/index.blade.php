@@ -50,15 +50,23 @@
                                 Tahun Ajaran</th>
                             <th
                                 class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs">
-                                Action</th>
+                                Bulan Pelaksanaan</th>
+                            <th
+                                class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs">
+                                Biaya SPP</th>
+                            <th
+                                class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs">
+                                Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="users-table-body">
                         @forelse ($academicYears as $academicYear)
                             <tr>
-                                <td class="border-b border-gray-200 px-6 py-4">Tahun Ajaran {{ $academicYear->start_year }}/{{ $academicYear->end_year }}</td>
+                                <td class="border-b border-gray-200 px-6 py-4">Tahun ajaran {{ $academicYear->start_year }}/{{ $academicYear->end_year }}</td>
+                                <td class="border-b border-gray-200 px-6 py-4">@nameMonth($academicYear->start_month) {{ $academicYear->start_year }} - @nameMonth($academicYear->end_month) {{ $academicYear->end_year }} </td>
+                                <td class="border-b border-gray-200 px-6 py-4">@rupiah($academicYear->price)</td>
                                 <td class="border-b border-gray-200 px-6 py-4">
-                                    <a href="{{ route('academic-year.show', $major) }}" class="font-bold py-2 px-4 bg-indigo-700 hover:bg-indigo-400 text-white rounded-lg">View</a>
+                                    <a href="{{ route('academic-year.edit', $academicYear) }}" class="font-bold py-2 px-4 bg-indigo-700 hover:bg-indigo-400 text-white rounded-lg">Edit</a>
                                 </td>
                             <tr>
                         @empty

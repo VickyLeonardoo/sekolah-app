@@ -17,6 +17,7 @@ return new class extends Migration
             $table->year('end_year');         // Menyimpan tahun berakhir
             $table->tinyInteger('start_month'); // Menyimpan bulan mulai (1-12)
             $table->tinyInteger('end_month');   // Menyimpan bulan berakhir (1-12)
+            $table->float('price',14,2);
             $table->softDeletes();
             $table->timestamps();
         });

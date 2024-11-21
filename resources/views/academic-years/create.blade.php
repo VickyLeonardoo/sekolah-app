@@ -9,7 +9,7 @@
                 <i class="fas fa-arrow-left mr-2"></i>
                 Kembali
             </a>
-        </div>
+        </div> 
     </x-slot>
 
     <div class="py-12">
@@ -53,27 +53,42 @@
                 </div>
             @endif
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-10 flex flex-col gap-y-5">
-                <form method="POST" action="{{ route('major.store') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('academic-year.store') }}" enctype="multipart/form-data">
                     @csrf
                     {{-- name, email, password, phone, identity_no --}}
                     <div class="mt-4">
-                        <x-input-label for="code" :value="__('Kode Jurusan')" />
-                        <x-text-input id="code" class="block mt-1 w-full" type="text" name="code"
-                            :value="old('code')" required autofocus autocomplete="code" />
-                        <x-input-error :messages="$errors->get('code')" class="mt-2" />
+                        <x-input-label for="start_year" :value="__('Tahun Mulai')" />
+                        <x-text-input id="start_year" class="block mt-1 w-full" type="number" name="start_year"
+                            :value="old('start_year')" required autofocus autocomplete="start_year" />
+                        <x-input-error :messages="$errors->get('start_year')" class="mt-2" />
                     </div>
 
                     <div class="mt-4">
-                        <x-input-label for="name" :value="__('Nama Jurusan')" />
-                        <x-text-input id="name" class="block mt-1 w-full" type="text" name="name"
-                            :value="old('name')" required autofocus autocomplete="name" />
-                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                        <x-input-label for="end_year" :value="__('Tahun Selesai')" />
+                        <x-text-input id="end_year" class="block mt-1 w-full" type="number" name="end_year"
+                            :value="old('end_year')" required autofocus autocomplete="end_year" />
+                        <x-input-error :messages="$errors->get('end_year')" class="mt-2" />
                     </div>
 
                     <div class="mt-4">
-                        <x-input-label for="description" :value="__('Description (Opsional)')" />
-                        <textarea id="description" name="description" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="3">{{ old('description') }}</textarea>
-                        <x-input-error :messages="$errors->get('answerText')" class="mt-2" />
+                        <x-input-label for="start_month" :value="__('Bulan Mulai')" />
+                        <x-text-input id="start_month" class="block mt-1 w-full" type="number" name="start_month"
+                            :value="old('start_month')" required autofocus autocomplete="start_month" />
+                        <x-input-error :messages="$errors->get('start_month')" class="mt-2" />
+                    </div>
+
+                    <div class="mt-4">
+                        <x-input-label for="end_month" :value="__('Bulan Selesai')" />
+                        <x-text-input id="end_month" class="block mt-1 w-full" type="number" name="end_month"
+                            :value="old('end_month')" required autofocus autocomplete="end_month" />
+                        <x-input-error :messages="$errors->get('end_month')" class="mt-2" />
+                    </div>
+
+                    <div class="mt-4">
+                        <x-input-label for="price" :value="__('Biaya SPP')" />
+                        <x-text-input id="price" class="block mt-1 w-full" type="number" name="price"
+                            :value="old('price')" required autofocus autocomplete="price" />
+                        <x-input-error :messages="$errors->get('price')" class="mt-2" />
                     </div>
 
                     <div class="flex items-center justify-end mt-4">
