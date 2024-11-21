@@ -55,13 +55,16 @@
                         <tr class="text-left">
                             <th
                                 class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs">
-                                Tahun Ajaran</th>
+                                Nama</th>
                             <th
                                 class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs">
-                                Bulan Pelaksanaan</th>
+                                NISN</th>
                             <th
                                 class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs">
-                                Biaya SPP</th>
+                                Kelas</th>
+                            <th
+                                class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs">
+                                Jurusan</th>
                             <th
                                 class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs">
                                 Aksi</th>
@@ -70,16 +73,17 @@
                     <tbody id="users-table-body">
                         @forelse ($students as $student)
                             <tr>
-                                <td class="border-b border-gray-200 px-6 py-4">Tahun ajaran {{ $student->start_year }}/{{ $student->end_year }}</td>
-                                <td class="border-b border-gray-200 px-6 py-4">@nameMonth($student->start_month) {{ $student->start_year }} - @nameMonth($student->end_month) {{ $student->end_year }} </td>
-                                <td class="border-b border-gray-200 px-6 py-4">@rupiah($student->price)</td>
+                                <td class="border-b border-gray-200 px-6 py-4">{{ $student->name }}</td>
+                                <td class="border-b border-gray-200 px-6 py-4">{{ $student->identity_no }}</td>
+                                <td class="border-b border-gray-200 px-6 py-4">{{ $student->grade }}</td>
+                                <td class="border-b border-gray-200 px-6 py-4">{{ $student->major->name }}</td>
                                 <td class="border-b border-gray-200 px-6 py-4">
-                                    <a href="{{ route('student.edit', $student) }}" class="font-bold py-2 px-4 bg-indigo-700 hover:bg-indigo-400 text-white rounded-lg">Edit</a>
+                                    <a href="{{ route('student.show', $student) }}" class="font-bold py-2 px-4 bg-indigo-700 hover:bg-indigo-400 text-white rounded-lg">Lihat Selengkapnya</a>
                                 </td>
                             <tr>
                         @empty
                         <tr>
-                            <td colspan="3" class="text-center border-b border-gray-200 px-6 py-4">Data tidak ditemukan</td>
+                            <td colspan="5" class="text-center border-b border-gray-200 px-6 py-4">Data tidak ditemukan</td>
                         </tr>
                         @endforelse
                     </tbody>

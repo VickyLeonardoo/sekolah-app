@@ -14,16 +14,22 @@ return new class extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->string('identity_no');
+            $table->foreignId('major_id')->constrained();
             $table->string('name');
             $table->string('gender');
             $table->string('religion');
             $table->date('dob');
-            $table->string('phone');
+            $table->string('phone')->nullable();
             $table->string('address');
             $table->string('father_name');
             $table->string('mother_name');
-            $table->string('fathmoer_phone');
-            $table->string('mother_phone');
+            $table->string('father_phone')->nullable();
+            $table->string('mother_phone')->nullable();
+            $table->boolean('is_graduated')->default(false);
+            $table->integer('account_created')->default(0);
+            $table->integer('grade')->default(10);
+            $table->text('photo')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

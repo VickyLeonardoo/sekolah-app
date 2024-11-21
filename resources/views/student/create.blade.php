@@ -53,42 +53,110 @@
                 </div>
             @endif
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-10 flex flex-col gap-y-5">
-                <form method="POST" action="{{ route('academic-year.store') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('student.store') }}" enctype="multipart/form-data">
                     @csrf
                     {{-- name, email, password, phone, identity_no --}}
                     <div class="mt-4">
-                        <x-input-label for="start_year" :value="__('Tahun Mulai')" />
-                        <x-text-input id="start_year" class="block mt-1 w-full" type="number" name="start_year"
-                            :value="old('start_year')" required autofocus autocomplete="start_year" />
-                        <x-input-error :messages="$errors->get('start_year')" class="mt-2" />
+                        <x-input-label for="identity_no" :value="__('Nomor Induk Siswa Nasional (NISN)')" />
+                        <x-text-input id="identity_no" class="block mt-1 w-full" type="text" name="identity_no"
+                            :value="old('identity_no')" required autofocus autocomplete="identity_no" />
+                        <x-input-error :messages="$errors->get('identity_no')" class="mt-2" />
                     </div>
 
                     <div class="mt-4">
-                        <x-input-label for="end_year" :value="__('Tahun Selesai')" />
-                        <x-text-input id="end_year" class="block mt-1 w-full" type="number" name="end_year"
-                            :value="old('end_year')" required autofocus autocomplete="end_year" />
-                        <x-input-error :messages="$errors->get('end_year')" class="mt-2" />
+                        <x-input-label for="name" :value="__('Nama Siswa')" />
+                        <x-text-input id="name" class="block mt-1 w-full" type="text" name="name"
+                            :value="old('name')" required autofocus autocomplete="name" />
+                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
 
                     <div class="mt-4">
-                        <x-input-label for="start_month" :value="__('Bulan Mulai')" />
-                        <x-text-input id="start_month" class="block mt-1 w-full" type="number" name="start_month"
-                            :value="old('start_month')" required autofocus autocomplete="start_month" />
-                        <x-input-error :messages="$errors->get('start_month')" class="mt-2" />
+                        <x-input-label for="dob" :value="__('Tanggal Lahir')" />
+                        <x-text-input id="dob" class="block mt-1 w-full" type="date" name="dob"
+                            :value="old('dob')" required autofocus autocomplete="dob" />
+                        <x-input-error :messages="$errors->get('dob')" class="mt-2" />
                     </div>
 
                     <div class="mt-4">
-                        <x-input-label for="end_month" :value="__('Bulan Selesai')" />
-                        <x-text-input id="end_month" class="block mt-1 w-full" type="number" name="end_month"
-                            :value="old('end_month')" required autofocus autocomplete="end_month" />
-                        <x-input-error :messages="$errors->get('end_month')" class="mt-2" />
+                        <x-input-label for="major_id" :value="__('Jurusan')" />
+                        <select name="major_id" id="major_id" class="rounded-lg pl-3 w-full border border-slate-300">
+                            <option value="" disabled selected>Pilih Jurusan</option>
+                            @foreach ($majors as $major)
+                                <option value="{{ $major->id }}"{{ $major->id == old('major_id') ? 'selected':'' }}>{{ $major->name }}</option>
+                            @endforeach
+                        </select>
+                        <x-input-error :messages="$errors->get('major_id')" class="mt-2" />
                     </div>
 
                     <div class="mt-4">
-                        <x-input-label for="price" :value="__('Biaya SPP')" />
-                        <x-text-input id="price" class="block mt-1 w-full" type="number" name="price"
-                            :value="old('price')" required autofocus autocomplete="price" />
-                        <x-input-error :messages="$errors->get('price')" class="mt-2" />
+                        <x-input-label for="gender" :value="__('Jenis Kelamin')" />
+                        <select name="gender" id="gender" class="rounded-lg pl-3 w-full border border-slate-300">
+                            <option value="" disabled selected>Pilih Jenis Kelamin</option>
+                            <option value="Laki - Laki" {{ old('Laki - Laki') ? 'selected':'' }}>Laki - Laki</option>
+                            <option value="Perempuan" {{ old('Perempuan') ? 'selected':'' }}>Perempuan</option>
+                        </select>
+                        <x-input-error :messages="$errors->get('gender')" class="mt-2" />
+                    </div>
+
+                    <div class="mt-4">
+                        <x-input-label for="religion" :value="__('Agama')" />
+                        <select name="religion" id="religion" class="rounded-lg pl-3 w-full border border-slate-300">
+                            <option value="" disabled selected>Pilih Agama</option>
+                            <option value="Islam" {{ old('Islam') ? 'selected':'' }}>Islam</option>
+                            <option value="Protestan" {{ old('Protestan') ? 'selected':'' }}>Protestan</option>
+                            <option value="Katolik" {{ old('Katolik') ? 'selected':'' }}>Katolik</option>
+                            <option value="Hindu" {{ old('Hindu') ? 'selected':'' }}>Hindu</option>
+                            <option value="Buddha" {{ old('Buddha') ? 'selected':'' }}>Buddha</option>
+                            <option value="Konghucu" {{ old('Konghucu') ? 'selected':'' }}>Konghucu</option>
+                        </select>
+                        <x-input-error :messages="$errors->get('religion')" class="mt-2" />
+                    </div>
+
+                    <div class="mt-4">
+                        <x-input-label for="phone" :value="__('Nomor Telepon Siswa')" />
+                        <x-text-input id="phone" class="block mt-1 w-full" type="text" name="phone"
+                            :value="old('phone')" autofocus autocomplete="phone" />
+                        <x-input-error :messages="$errors->get('phone')" class="mt-2" />
+                    </div>
+
+                    <div class="mt-4">
+                        <x-input-label for="address" :value="__('Alamat')" />
+                        <textarea id="address" name="address" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="4">{{ old('address') }}</textarea>
+                        <x-input-error :messages="$errors->get('address')" class="mt-2" />
+                    </div>
+
+                    <div class="mt-4">
+                        <x-input-label for="father_name" :value="__('Nama Ayah')" />
+                        <x-text-input id="father_name" class="block mt-1 w-full" type="text" name="father_name"
+                            :value="old('father_name')" required autofocus autocomplete="father_name" />
+                        <x-input-error :messages="$errors->get('father_name')" class="mt-2" />
+                    </div>
+
+                    <div class="mt-4">
+                        <x-input-label for="father_phone" :value="__('Nomor Telepon Ayah')" />
+                        <x-text-input id="father_phone" class="block mt-1 w-full" type="text" name="father_phone"
+                            :value="old('father_phone')" autofocus autocomplete="father_phone" />
+                        <x-input-error :messages="$errors->get('father_phone')" class="mt-2" />
+                    </div>
+
+                    <div class="mt-4">
+                        <x-input-label for="mother_name" :value="__('Nama Ibu')" />
+                        <x-text-input id="mother_name" class="block mt-1 w-full" type="text" name="mother_name"
+                            :value="old('mother_name')" required autofocus autocomplete="mother_name" />
+                        <x-input-error :messages="$errors->get('mother_name')" class="mt-2" />
+                    </div>
+
+                    <div class="mt-4">
+                        <x-input-label for="mother_phone" :value="__('Nomor Telepon Ibu')" />
+                        <x-text-input id="mother_phone" class="block mt-1 w-full" type="text" name="mother_phone"
+                            :value="old('mother_phone')" autofocus autocomplete="mother_phone" />
+                        <x-input-error :messages="$errors->get('mother_phone')" class="mt-2" />
+                    </div>
+
+                    <div class="mt-4">
+                        <x-input-label for="photo" :value="__('Foto')" />
+                        <x-text-input id="photo" class="block mt-1 w-full border-2 border-gray-100 rounded-md focus:border-indigo-500 focus:ring focus:ring-indigo-200" type="file" name="photo" autofocus autocomplete="photo" />
+                        <x-input-error :messages="$errors->get('photo')" class="mt-2" />
                     </div>
 
                     <div class="flex items-center justify-end mt-4">

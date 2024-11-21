@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Major;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StudentStoreRequest;
+use App\Http\Requests\StudentUpdateRequest;
 
 class StudentController extends Controller
 {
@@ -12,14 +16,17 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
-        $students = Student::query();
+        $students = Student::with('major');
 
         if ($request->has('search')) {
             $query = $request->search;
             // Tambahkan pencarian pada kolom 'code' dan 'name'
             $students = $students->where(function ($q) use ($query) {
                 $q->where('name', 'like', "%{$query}%")
-                ->orWhere('identity_no', 'like', "%{$query}%");
+                ->orWhere('identity_no', 'like', "%{$query}%")
+                ->orWhereHas('major', function ($q) use ($query) {
+                    $q->where('name', 'like', "%{$query}%");
+                });
             });
         }
 
@@ -35,15 +42,27 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        $majors = Major::all();
+        return view('student.create',[
+            'majors' => $majors,
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StudentStoreRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        if ($request->hasFile('photo')) {
+            $imagePath = $request->file('photo')->store('student-photo','public');
+            $data['photo'] = $imagePath;
+        }
+
+        $student = Student::create($data);
+        
+        return redirect()->route('student.index')->with('success','Data siswa berhasil ditambahkan');
     }
 
     /**
@@ -51,7 +70,9 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        //
+        return view('student.show',[
+            'student' => $student
+        ]);
     }
 
     /**
@@ -59,15 +80,32 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        //
+        $majors = Major::all();
+        return view('student.edit',[
+            'student' => $student,
+            'majors' => $majors,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Student $student)
+    public function update(StudentUpdateRequest $request, Student $student)
     {
-        //
+        $data = $request->validated();
+
+        if ($request->hasFile('photo')) {
+            // Hapus gambar lama jika ada
+            if ($student->photo) {
+                Storage::disk('public')->delete($student->photo);
+            }
+            // Simpan gambar baru
+            $imagePath = $request->file('photo')->store('student-photo', 'public');
+            $data['photo'] = $imagePath;
+        }
+        
+        $student->update($data);
+        return redirect()->route('student.show',$student)->with('success','Data siswa berhasil diperbarui');
     }
 
     /**
