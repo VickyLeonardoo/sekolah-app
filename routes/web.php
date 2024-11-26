@@ -1,13 +1,14 @@
 <?php
 
-use App\Http\Controllers\AcademicYearController;
-use App\Http\Controllers\MajorController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SchoolClassController;
-use App\Http\Controllers\StudentController;
-use App\Http\Controllers\TeacherController;
 use App\Models\SchoolClass;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MajorController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\SchoolClassController;
+use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\StudentClassController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -49,6 +50,11 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('student', StudentController::class)
         ->middleware('role:superadmin|admin');
+
+    Route::get('/school-class/{school_class:id}/student/list/year/{academic_year:id}',[StudentClassController::class, 'index'])
+        ->middleware('role:superadmin|admin')
+        ->name('school-class.student');
+    
 
 });
 

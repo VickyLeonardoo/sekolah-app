@@ -50,7 +50,7 @@
                         <div class="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg flex justify-between items-center shadow
                             transform transition duration-200 ease-in-out hover:scale-101">
                             <span class="text-gray-900 font-medium">{{ $academicYear->start_year }}/{{ $academicYear->end_year }}</span>
-                            <a href="#" class="text-indigo-600 hover:text-indigo-900 font-semibold">
+                            <a href="{{ route('school-class.student',[$class,$academicYear]) }}" class="text-indigo-600 hover:text-indigo-900 font-semibold">
                                 Lihat Detail
                             </a>
                         </div>

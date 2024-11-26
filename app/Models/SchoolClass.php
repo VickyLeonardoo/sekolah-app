@@ -17,4 +17,8 @@ class SchoolClass extends Model
         return $this->belongsTo(Major::class);
     }
 
+    public function student_class(){
+        return $this->hasMany(StudentClass::class);
+    }
+
 }

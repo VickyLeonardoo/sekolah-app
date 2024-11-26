@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AcademicYear;
+use App\Models\SchoolClass;
+use App\Models\Student;
 use App\Models\StudentClass;
 use Illuminate\Http\Request;
 
@@ -10,9 +13,31 @@ class StudentClassController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(SchoolClass $schoolClass, $academicYear)
     {
-        //
+        $academicYear = AcademicYear::find($academicYear);
+
+        if (!$academicYear) {
+            $academicYear['id'] = null;
+        }
+
+        $grade = $schoolClass->grade;
+        $students = []; 
+        if ($grade == 10) {
+            $studentList = Student::where('grade','10')->with('major')->get();
+            foreach ($studentList as $student) {
+                if ($student->student_classes->isEmpty()) {
+                    $students[] = $student; // Tambahkan siswa ke dalam daftar
+                }
+            }
+        }
+        $studentClass = StudentClass::where('school_class_id', $schoolClass->id)->where('academic_year_id',$academicYear->id)->get();
+        return view('class.student',[
+            'class' => $schoolClass,
+            'studentClass' => $studentClass,
+            'academicYear' => $academicYear,
+            'students' => $students,
+        ]);
     }
 
     /**
