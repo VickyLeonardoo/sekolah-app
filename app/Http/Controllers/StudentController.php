@@ -157,4 +157,23 @@ class StudentController extends Controller
             ]);
         }
     }
+
+    public function information(Request $request)
+    {
+        $student = [];
+        if ($request->has('identity_no')) {
+            $student = Student::with('major')
+                ->where('identity_no', $request->identity_no)
+                ->first();
+            if (!$student) {
+                return redirect()->back()->with('error', 'Data siswa tidak ditemukan, periksa kembali NISN')->withInput();
+            }
+            return view('student.information', [
+                'student' => $student
+            ]);
+        }else{
+            return view('student.information');
+        }
+    }
+
 }

@@ -8,6 +8,21 @@
     },
     get femaleCount() {
         return this.selectedStudents.filter(id => this.students.find(s => s.id === id && s.gender === 'Female')).length;
+    },
+    submitSelectedStudents() {
+        if (this.selectedStudents.length > 0) {
+            axios.post('{{ route("school-class.store.student", [$class->id, $academicYear->id]) }}', {
+                students: this.selectedStudents
+            }).then(response => {
+                // Refresh halaman atau update list siswa
+                location.reload();
+            }).catch(error => {
+                // Tangani error
+                alert('Gagal menambahkan siswa');
+            });
+        } else {
+            alert('Tidak ada siswa yang dipilih.');
+        }
     }
 }">
     <!-- Tombol Tambah Siswa -->
@@ -112,3 +127,19 @@
         </div>
     </div>
 </div>
+<script>
+    function submitSelectedStudents() {
+        // Kirim data siswa yang dipilih ke server
+        if (this.selectedStudents.length > 0) {
+            axios.post('{{ route("school-class.store.student", [$class->id,$academicYear->id]) }}', {
+                students: this.selectedStudents
+            }).then(response => {
+                // Refresh halaman atau update list siswa
+                location.reload();
+            }).catch(error => {
+                // Tangani error
+                alert('Gagal menambahkan siswa');
+            });
+        }
+    }
+</script>

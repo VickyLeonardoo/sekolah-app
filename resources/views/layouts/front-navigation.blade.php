@@ -7,12 +7,15 @@
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" class="flex items-center space-x-2">
                         <img src="https://www.svgrepo.com/show/419363/administration-calendar-calendars.svg" alt="Sanmax Laundry Logo" class="h-8 w-8">
-                        <span class="text-xl font-bold text-indigo-400">Administrasion App</span>
+                        <span class="text-xl font-bold text-indigo-400">SIA SMK 02</span>
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="/" :active="request()->routeIs('home')">
+                        {{ __('Home') }}
+                    </x-nav-link>
                     @auth
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
@@ -23,6 +26,9 @@
                     </x-nav-link>
                     <x-nav-link :href="route('teacher.index')" :active="request()->routeIs('teacher*')">
                         {{ __('Lacak Pembayaran') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('student.information')" :active="request()->routeIs('student.information')">
+                        {{ __('Cek Informasi Siswa') }}
                     </x-nav-link>
                 </div>
             </div>

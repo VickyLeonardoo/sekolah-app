@@ -4,7 +4,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
@@ -19,11 +18,30 @@
             [x-cloak] {
                 display: none !important;
             }
+            
+            button:disabled {
+                cursor: not-allowed;
+                opacity: 0.5; /* Mengurangi opacity untuk memberi efek visual bahwa tombol tidak aktif */
+            }
         </style>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-indigo-100 dark:bg-gray-900">
-            @include('layouts.navigation')
+            {{-- Untuk pengguna yang sudah login berdasarkan role --}}
+            @auth
+            @role(['superadmin', 'manager', 'admin', 'hr'])
+                @include('layouts.navigation')
+            @endrole
+
+            @role('applicant')
+                @include('layouts.front-navigation')
+            @endrole
+            @endauth
+
+            {{-- Untuk pengguna yang belum login (guest) --}}
+            @guest
+            @include('layouts.front-navigation')
+            @endguest
 
             <!-- Page Heading -->
             @isset($header)

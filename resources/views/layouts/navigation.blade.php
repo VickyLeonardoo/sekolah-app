@@ -7,7 +7,7 @@
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" class="flex items-center space-x-2">
                         <img src="https://www.svgrepo.com/show/419363/administration-calendar-calendars.svg" alt="Sanmax Laundry Logo" class="h-8 w-8">
-                        <span class="text-xl font-bold text-indigo-400">Administrasion App</span>
+                        <span class="text-xl font-bold text-indigo-400">SIA SMK 02</span>
                     </a>
                 </div>
 
