@@ -19,6 +19,7 @@ return new class extends Migration
             $table->tinyInteger('end_month');   // Menyimpan bulan berakhir (1-12)
             $table->float('price',14,2);
             $table->softDeletes();
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
     }
