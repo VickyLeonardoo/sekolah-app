@@ -62,11 +62,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/school-class/{school_class:id}/student/list/year/{academic_year:id}',[StudentClassController::class, 'index'])
         ->middleware('role:superadmin|admin')
         ->name('school-class.student');
-    
+
+    Route::get('/student-classes/promote/{ids}/{classId}/{promotedYear}', [StudentClassController::class, 'set_promote'])
+        ->name('student-classes.set.promote')
+        ->middleware('role:superadmin|admin');
+
     Route::resource('student-classes', StudentClassController::class)
         ->middleware('role:superadmin|admin');
 
     Route::resource('teacher-classes', TeacherClassController::class)
+        ->middleware('role:superadmin|admin');
+    
+    Route::get('/student-classes/graduated/{ids}/', [StudentClassController::class, 'set_graduated'])
+        ->name('student-classes.set.graduated')
+        ->middleware('role:superadmin|admin');
+
+    Route::get('/student-classes/demoted/{ids}/{classId}/{promotedYear}', [StudentClassController::class, 'set_demoted'])
+        ->name('student-classes.set.demoted')
         ->middleware('role:superadmin|admin');
 });
 

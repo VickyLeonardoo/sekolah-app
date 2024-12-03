@@ -47,6 +47,7 @@
             @endif
             <!-- Class Information Section with Edit and Delete Buttons on Right -->
             <!-- Tambahkan tombol edit di samping judul -->
+            
             <div class="bg-white shadow sm:rounded-lg p-6 mb-6 flex justify-between items-center">
                 <div>
                     <div class="flex items-center">
@@ -75,6 +76,57 @@
                 </div>
             </div>
 
+            <div class="flex justify-between items-center bg-white shadow-md rounded-lg p-4 mb-6">
+                <div class="flex-grow mr-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Manajemen Kenaikan Kelas</h3>
+                    <p class="text-sm text-gray-600">Pilih status kenaikan kelas untuk siswa yang dipilih</p>
+                </div>
+                <div class="flex space-x-4">
+                    @if ($class->grade == 10 or $class->grade == 11)
+                    <button
+                        id="open-modal"
+                        class="group relative inline-flex items-center justify-center overflow-hidden rounded-lg 
+                            bg-gradient-to-r from-green-500 to-green-600 
+                            px-6 py-3 text-white shadow-lg transition duration-300 
+                            hover:from-green-600 hover:to-green-700 
+                            focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2">
+                        <span class="absolute inset-0 bg-green-700 opacity-0 transition-opacity group-hover:opacity-20"></span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="font-medium">Naik Kelas</span>
+                    </button>
+                    @else
+                    <button 
+                        id="graduatedSelected()"
+                        class="group relative inline-flex items-center justify-center overflow-hidden rounded-lg 
+                            bg-gradient-to-r from-green-500 to-green-600 
+                            px-6 py-3 text-white shadow-lg transition duration-300 
+                            hover:from-green-600 hover:to-green-700 
+                            focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2">
+                        <span class="absolute inset-0 bg-green-700 opacity-0 transition-opacity group-hover:opacity-20"></span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="font-medium">Lulus</span>
+                    </button>
+                    @endif
+                    
+                    <button 
+                        id="open-demot"
+                        class="group relative inline-flex items-center justify-center overflow-hidden rounded-lg 
+                                bg-gradient-to-r from-red-500 to-red-600 
+                                px-6 py-3 text-white shadow-lg transition duration-300 
+                                hover:from-red-600 hover:to-red-700 
+                                focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2">
+                        <span class="absolute inset-0 bg-red-700 opacity-0 transition-opacity group-hover:opacity-20"></span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="font-medium">Tidak Naik Kelas</span>
+                    </button>
+                </div>
+            </div>
 
             <!-- Related Classes Section -->
             <div class="bg-white shadow sm:rounded-lg p-6">
@@ -95,6 +147,9 @@
                         <thead class="bg-gray-100 border-b border-gray-200">
                             <tr>
                                 <th
+                                class="px-4 py-3 text-left text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <input type="checkbox" style="transform: scale(1.3);" onclick="toggleCheckboxes(this)"></th>
+                                <th
                                     class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     No</th>
                                 <th
@@ -104,6 +159,9 @@
                                     class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     NISN</th>
                                 <th
+                                    class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Status</th>
+                                <th
                                     class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Aksi</th>
                             </tr>
@@ -111,6 +169,9 @@
                         <tbody class="divide-y divide-gray-200">
                             @forelse($studentClass as $index => $student)
                                 <tr class="hover:bg-gray-50 transition duration-200 ease-in-out">
+                                    <td class="px-4 py-4 whitespace-nowrap text-center">
+                                        <input type="checkbox" class="application-checkbox" value="{{ $student->id }}" style="transform: scale(1.3); vertical-align: middle;">
+                                    </td>
                                     <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {{ $loop->iteration }}
                                     </td>
@@ -121,6 +182,17 @@
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {{ $student->student->identity_no }}
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        @if ($student->status == 'Promoted')
+                                            Naik Kelas
+                                        @elseif($student->status == 'Retained')
+                                            Tinggal Kelas
+                                        @elseif ($student->status == 'Graduated')
+                                            Lulus
+                                        @else
+                                             -       
+                                        @endif
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap text-center">
                                         <div class="flex justify-center space-x-2">
@@ -139,7 +211,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="px-4 py-4 text-center text-gray-500">
+                                    <td colspan="6" class="px-4 py-4 text-center text-gray-500">
                                         Tidak ada siswa dalam kelas ini.
                                     </td>
                                 </tr>
@@ -150,6 +222,87 @@
             </div>
         </div>
     </div>
+
+    {{-- Modal Tinggal Kelas --}}
+    <div id="modal-tinggal-kelas" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50">
+        <div class="w-full max-w-lg rounded-lg bg-white p-6 shadow-lg">
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-semibold">Konfirmasi Tinggal Kelas Kelas</h2>
+                <button id="close-demot" class="text-gray-500 hover:text-red-500">
+                    &times;
+                </button>
+            </div>
+            <div class="mt-4">
+                <p>Pilih kelas untuk siswa ini:</p>
+                <!-- Dropdown untuk memilih kelas -->
+                <input type="hidden" id="demoted-year" value="{{ $academicYear->id }}">
+                <select id="class-demot" name="promoted_class" class="w-full mt-2 rounded border-gray-300 bg-gray-50 p-2 text-gray-700 focus:ring-green-500">
+                    <option value="" disabled selected>Pilih Kelas</option>
+                    @foreach ($demotedClass as $classDemoted)
+                        <option value="{{ $classDemoted->id }}">{{ $classDemoted->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mt-6 flex justify-end space-x-4">
+                <button id="cancel-demot" class="px-4 py-2 text-gray-700 border rounded hover:bg-gray-200">
+                    Batal
+                </button>
+                <button  onclick="demotedSelected()" 
+                        class="group relative inline-flex items-center justify-center overflow-hidden rounded-lg 
+                                bg-gradient-to-r from-green-500 to-green-600 
+                                px-6 py-3 text-white shadow-lg transition duration-300 
+                                hover:from-green-600 hover:to-green-700 
+                                focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2">
+                        <span class="absolute inset-0 bg-green-700 opacity-0 transition-opacity group-hover:opacity-20"></span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="font-medium">Naik Kelas</span>
+                    </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Naik Kelas -->
+    <div id="modal-naik-kelas" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50">
+        <div class="w-full max-w-lg rounded-lg bg-white p-6 shadow-lg">
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-semibold">Konfirmasi Naik Kelas</h2>
+                <button id="close-modal" class="text-gray-500 hover:text-red-500">
+                    &times;
+                </button>
+            </div>
+            <div class="mt-4">
+                <p>Pilih kelas baru untuk siswa ini:</p>
+                <!-- Dropdown untuk memilih kelas -->
+                <input type="hidden" id="promoted-year" value="{{ $academicYear->id }}">
+                <select id="class-select" name="promoted_class" class="w-full mt-2 rounded border-gray-300 bg-gray-50 p-2 text-gray-700 focus:ring-green-500">
+                    <option value="" disabled selected>Pilih Kelas</option>
+                    @foreach ($promotedClass as $classPromoted)
+                        <option value="{{ $classPromoted->id }}">{{ $classPromoted->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mt-6 flex justify-end space-x-4">
+                <button id="cancel-modal" class="px-4 py-2 text-gray-700 border rounded hover:bg-gray-200">
+                    Batal
+                </button>
+                <button  onclick="promoteSelected()" 
+                        class="group relative inline-flex items-center justify-center overflow-hidden rounded-lg 
+                                bg-gradient-to-r from-green-500 to-green-600 
+                                px-6 py-3 text-white shadow-lg transition duration-300 
+                                hover:from-green-600 hover:to-green-700 
+                                focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2">
+                        <span class="absolute inset-0 bg-green-700 opacity-0 transition-opacity group-hover:opacity-20"></span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="font-medium">Naik Kelas</span>
+                    </button>
+            </div>
+        </div>
+    </div>
+
     <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
         <div class="bg-white rounded-lg w-3/4 max-w-4xl shadow-2xl">
             <!-- Modal Header -->
@@ -292,7 +445,175 @@
             </form>
         </div>
     </div>
+    
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const openModalBtn = document.getElementById('open-demot');
+            const closeModalBtn = document.getElementById('close-demot');
+            const cancelModalBtn = document.getElementById('cancel-demot');
+            const modal = document.getElementById('modal-tinggal-kelas');
+    
+            // Fungsi untuk membuka modal
+            openModalBtn.addEventListener('click', () => {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            });
+    
+            // Fungsi untuk menutup modal
+            closeModalBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+            });
+    
+            cancelModalBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+            });
+    
+            // Tutup modal jika klik di luar konten modal
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+    <script>
+        function graduatedSelected() {
+            var selected = [];
+            document.querySelectorAll('input[type="checkbox"].application-checkbox:checked').forEach(function(checkbox) {
+                selected.push(checkbox.value);
+            });
+            
+            if (selected.length > 0) {
+                // Tambahkan konfirmasi sebelum navigasi
+                var confirmMessage = `Anda yakin ingin melanjutkan ?`;
+                if (confirm(confirmMessage)) {
+                    var url = "{{ route('student-classes.set.graduated', ':ids') }}";
+                    url = url.replace(':ids', selected.join(','));
+                    window.location.href = url;
+                }
+            } else {
+                showNoSelectionAlert(); // Panggil fungsi yang sudah ada untuk menangani tidak ada seleksi
+            }
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const openModalBtn = document.getElementById('open-modal');
+            const closeModalBtn = document.getElementById('close-modal');
+            const cancelModalBtn = document.getElementById('cancel-modal');
+            const modal = document.getElementById('modal-naik-kelas');
+    
+            // Fungsi untuk membuka modal
+            openModalBtn.addEventListener('click', () => {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            });
+    
+            // Fungsi untuk menutup modal
+            closeModalBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+            });
+    
+            cancelModalBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+            });
+    
+            // Tutup modal jika klik di luar konten modal
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+    <script>
+        function showNoSelectionAlert() {
+            Swal.fire({
+                title: 'Tidak ada siswa yang dipilih',
+                text: 'Pilih setidaknya 1 siswa untuk melakukan aksi ini',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });
+        }
+
+        function demotedSelected() {
+        // Ambil ID kelas yang dipilih
+            var classId = document.getElementById('class-demot').value;
+
+            if (!classId) {
+                alert('Silakan pilih kelas terlebih dahulu!');
+                return;
+            }
+
+            // Ambil ID tahun promosi
+            var promotedYear = document.getElementById('demoted-year').value;
+
+            if (!promotedYear) {
+                alert('Parameter tahun promosi tidak ditemukan!');
+                return;
+            }
+
+            // Ambil semua checkbox yang dicentang
+            var selected = [];
+            document.querySelectorAll('input[type="checkbox"].application-checkbox:checked').forEach(function (checkbox) {
+                selected.push(checkbox.value);
+            });
+
+            if (selected.length > 0) {
+                // Tambahkan ID kelas dan promotedYear ke dalam URL
+                var url = "{{ route('student-classes.set.demoted', ['ids' => ':ids', 'classId' => ':classId', 'promotedYear' => ':promotedYear']) }}";
+                url = url.replace(':ids', selected.join(','));
+                url = url.replace(':classId', classId);
+                url = url.replace(':promotedYear', promotedYear);
+
+                window.location.href = url;
+            } else {
+                showNoSelectionAlert(); // Fungsi alert untuk tidak ada checkbox yang dicentang
+            }
+        }
+
+        function promoteSelected() {
+        // Ambil ID kelas yang dipilih
+            var classId = document.getElementById('class-select').value;
+
+            if (!classId) {
+                alert('Silakan pilih kelas terlebih dahulu!');
+                return;
+            }
+
+            // Ambil ID tahun promosi
+            var promotedYear = document.getElementById('promoted-year').value;
+
+            if (!promotedYear) {
+                alert('Parameter tahun promosi tidak ditemukan!');
+                return;
+            }
+
+            // Ambil semua checkbox yang dicentang
+            var selected = [];
+            document.querySelectorAll('input[type="checkbox"].application-checkbox:checked').forEach(function (checkbox) {
+                selected.push(checkbox.value);
+            });
+
+            if (selected.length > 0) {
+                // Tambahkan ID kelas dan promotedYear ke dalam URL
+                var url = "{{ route('student-classes.set.promote', ['ids' => ':ids', 'classId' => ':classId', 'promotedYear' => ':promotedYear']) }}";
+                url = url.replace(':ids', selected.join(','));
+                url = url.replace(':classId', classId);
+                url = url.replace(':promotedYear', promotedYear);
+
+                window.location.href = url;
+            } else {
+                showNoSelectionAlert(); // Fungsi alert untuk tidak ada checkbox yang dicentang
+            }
+        }
+        
+        function toggleCheckboxes(source) {
+            checkboxes = document.querySelectorAll('input[type="checkbox"].application-checkbox');
+            for (var i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].checked = source.checked;
+            }
+        }
         // Modal Functions
         function openHomeroomTeacherModal() {
             document.getElementById('homeroomTeacherModal').classList.remove('hidden');
@@ -323,7 +644,6 @@
             });
         });
     </script>
-    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.querySelector('input[placeholder="Cari siswa di kelas..."]');
