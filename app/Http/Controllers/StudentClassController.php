@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Models\Teacher;
+use App\Models\StudentFee;
 use App\Models\SchoolClass;
 use App\Models\AcademicYear;
 use App\Models\StudentClass;
-use App\Models\Teacher;
 use App\Models\TeacherClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -87,30 +88,26 @@ class StudentClassController extends Controller
     {
         $validatedData = $request->validate([
             'students' => 'required|array',
-            'students.*' => 'exists:students,id'
+            'students.*' => 'exists:students,id',
         ]);
 
+        $school_class = SchoolClass::findOrFail($school_class);
+        $academic_year = AcademicYear::findOrFail($academic_year);
 
-        $school_class = SchoolClass::find($school_class);
-        $academic_year = AcademicYear::find($academic_year);
-        // Hitung jumlah siswa yang sudah ada di kelas ini pada tahun akademik ini
+        // Hitung kapasitas siswa
         $current_students_count = StudentClass::where('school_class_id', $school_class->id)
             ->where('academic_year_id', $academic_year->id)
             ->count();
 
-        // Hitung jumlah siswa baru yang ingin ditambahkan
         $new_students_count = count($validatedData['students']);
-        // Cek apakah total siswa melebihi batas maksimal
+
         if (($current_students_count + $new_students_count) > $school_class->max_student) {
-            // Kembalikan error dengan session
             return redirect()->back()->with('error', 
                 "Penambahan siswa melebihi kapasitas maksimal kelas. " .
-                "kelas hanya dapat menampung maksimal {$school_class->max_student} siswa."
+                "Kelas hanya dapat menampung maksimal {$school_class->max_student} siswa."
             )->withInput();
         }
 
-
-        // Mulai transaksi untuk menambahkan siswa
         DB::beginTransaction();
 
         try {
@@ -128,13 +125,14 @@ class StudentClassController extends Controller
                         'academic_year_id' => $academic_year->id,
                         'status' => null,
                         'created_at' => now(),
-                        'updated_at' => now()
+                        'updated_at' => now(),
                     ];
                 }
             }
 
             if (!empty($studentClassData)) {
                 StudentClass::insert($studentClassData);
+                $this->create_student_fee($academic_year->id, $studentClassData);
             }
 
             DB::commit();
@@ -145,6 +143,7 @@ class StudentClassController extends Controller
             return redirect()->back()->with('error', 'Gagal menambahkan siswa ke kelas');
         }
     }
+
 
 
     /**
@@ -174,62 +173,94 @@ class StudentClassController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(StudentClass $studentClass)
+    public function destroy($student_id, $academic_year)
     {
-        $studentClass->delete();
+        $studentClass = StudentClass::find($student_id);
+        $academic_year = AcademicYear::find($academic_year);
+        if ($studentClass) {
+            $studentClass->delete();
+            StudentFee::where('student_id',$studentClass->student_id)->where('academic_year_id',$academic_year->id)->delete();
+        }
         return redirect()->back()->with('success', 'Siswa berhasil dihapus dari kelas');
     }
 
-    public function set_promote($ids, $classId, $promotedYear){
-        $school_class = SchoolClass::find($classId);
-        $currentYear = AcademicYear::find($promotedYear);
+    public function set_promote($ids, $classId, $promotedYear)
+    {
+        // Cari kelas berdasarkan ID
+        $school_class = SchoolClass::findOrFail($classId);
+        
+        // Cari tahun ajaran berdasarkan ID tahun ajaran yang akan dipromosikan
+        $currentYear = AcademicYear::findOrFail($promotedYear);
+    
+        // Cari tahun ajaran baru berdasarkan akhir tahun ajaran sekarang
         $academic_year = AcademicYear::where('start_year', $currentYear->end_year)->first();
-        
+    
         if (!$academic_year) {
-            return redirect()->back()->with('error', 'Tahun ajaran yang baru dibuat, buat terlebih dahulu tahun ajaran yang baru');
+            return redirect()->back()->with('error', 'Tahun ajaran baru belum dibuat. Buat terlebih dahulu tahun ajaran yang baru.');
         }
-        
-        $studentIds = is_array($ids) ? $ids : explode(',', $ids); // Pastikan $ids adalah array
-        
-        StudentClass::whereIn('id', $studentIds)->update(['status' => 'Promoted']);
-        
-        $studentClassData = [];
-        foreach ($studentIds as $studentId) {
-            $existingAssignment = StudentClass::where('student_id', $studentId)
+    
+        // Pastikan $ids adalah array
+        $studentIds = is_array($ids) ? $ids : explode(',', $ids);
+    
+        // Mulai transaksi
+        DB::beginTransaction();
+    
+        try {
+            // Update status siswa menjadi 'Promoted'
+            StudentClass::whereIn('id', $studentIds)->update(['status' => 'Promoted']);
+    
+            // Data baru untuk dimasukkan ke tabel StudentClass
+            $studentClassData = [];
+    
+            // Query untuk memeriksa apakah siswa sudah ada di kelas baru
+            $existingAssignments = StudentClass::whereIn('student_id', $studentIds)
                 ->where('school_class_id', $school_class->id)
                 ->where('academic_year_id', $academic_year->id)
-                ->exists();
+                ->pluck('student_id')
+                ->toArray();
     
-            if (!$existingAssignment) {
-                $studentClassData[] = [
-                    'student_id' => $studentId, // Pastikan ini adalah ID siswa
-                    'school_class_id' => $school_class->id,
-                    'academic_year_id' => $academic_year->id,
-                    'status' => null,
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ];
+            // Siapkan data untuk siswa yang belum ada di kelas baru
+            foreach ($studentIds as $studentId) {
+                if (!in_array($studentId, $existingAssignments)) {
+                    $studentClassData[] = [
+                        'student_id' => $studentId,
+                        'school_class_id' => $school_class->id,
+                        'academic_year_id' => $academic_year->id,
+                        'status' => null,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
             }
-        }
-        
-        if (!empty($studentClassData)) {
-            // Gunakan mass insert
-            StudentClass::insert($studentClassData);
-            
-            // Update grade untuk setiap siswa yang baru ditambahkan
-            $newStudentClasses = StudentClass::where('academic_year_id', $academic_year->id)
-                ->whereIn('student_id', $studentIds)
-                ->get();
-            
-            foreach ($newStudentClasses as $studentClass) {
-                $studentClass->student()->update(['grade' => $school_class->grade]);
-            }
-        } else {
-            return redirect()->back()->with('error', 'Tidak ada siswa yang dapat ditambahkan ke kelas yang baru');
-        }
     
-        return redirect()->back()->with('success', 'Status siswa berhasil diubah menjadi naik kelas');
+            // Insert data siswa baru ke kelas baru jika ada
+            if (!empty($studentClassData)) {
+                StudentClass::insert($studentClassData);
+    
+                // Update grade siswa yang baru ditambahkan
+                Student::whereIn('id', $studentIds)->update(['grade' => $school_class->grade]);
+    
+                // Ambil semua data StudentClass baru yang baru dimasukkan
+                $newStudentClasses = StudentClass::where('academic_year_id', $academic_year->id)
+                    ->whereIn('student_id', $studentIds)
+                    ->get();
+    
+                // Buat student fee untuk siswa yang baru ditambahkan
+                $this->create_student_fee($academic_year->id, $newStudentClasses);
+            } else {
+                DB::rollBack(); // Batalkan jika tidak ada siswa yang bisa ditambahkan
+                return redirect()->back()->with('error', 'Tidak ada siswa yang dapat ditambahkan ke kelas baru.');
+            }
+    
+            DB::commit(); // Commit transaksi jika semuanya berhasil
+            return redirect()->back()->with('success', 'Status siswa berhasil diubah menjadi naik kelas.');
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback jika terjadi error
+            Log::error('Error promoting students: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mempromosikan siswa.');
+        }
     }
+    
 
     public function set_graduated($ids){
         $studentIds = explode(',', $ids); // Get array of IDs
@@ -238,38 +269,135 @@ class StudentClassController extends Controller
         return redirect()->back()->with('success', 'Status siswa berhasil diubah menjadi Lulus');
     }
 
-    public function set_demoted(Request $request, $ids, $classId, $promotedYear){
-        $school_class = SchoolClass::find($classId);
-        $currentYear = AcademicYear::find($promotedYear);
+    public function set_demoted(Request $request, $ids, $classId, $promotedYear)
+    {
+        // Cari kelas berdasarkan ID
+        $school_class = SchoolClass::findOrFail($classId);
+    
+        // Cari tahun ajaran berdasarkan ID tahun ajaran yang akan dipromosikan
+        $currentYear = AcademicYear::findOrFail($promotedYear);
+    
+        // Cari tahun ajaran baru berdasarkan akhir tahun ajaran sekarang
         $academic_year = AcademicYear::where('start_year', $currentYear->end_year)->first();
-
-        $studentIds = is_array($ids) ? $ids : explode(',', $ids); 
-        StudentClass::whereIn('id', $studentIds)->update(['status' => 'Retained']);
-        
-        $studentClassData = [];
-        foreach ($studentIds as $studentId) {
-            $existingAssignment = StudentClass::where('student_id', $studentId)
+    
+        if (!$academic_year) {
+            return redirect()->back()->with('error', 'Tahun ajaran baru belum dibuat. Buat terlebih dahulu tahun ajaran yang baru.');
+        }
+    
+        // Pastikan $ids adalah array
+        $studentIds = is_array($ids) ? $ids : explode(',', $ids);
+    
+        // Mulai transaksi
+        DB::beginTransaction();
+    
+        try {
+            // Update status siswa menjadi 'Retained' (ditahan)
+            StudentClass::whereIn('id', $studentIds)->update(['status' => 'Retained']);
+    
+            // Data baru untuk dimasukkan ke tabel StudentClass
+            $studentClassData = [];
+    
+            // Query untuk memeriksa apakah siswa sudah ada di kelas baru
+            $existingAssignments = StudentClass::whereIn('student_id', $studentIds)
                 ->where('school_class_id', $school_class->id)
                 ->where('academic_year_id', $academic_year->id)
-                ->exists();
+                ->pluck('student_id')
+                ->toArray();
     
-            if (!$existingAssignment) {
-                $studentClassData[] = [
-                    'student_id' => $studentId, // Pastikan ini adalah ID siswa
-                    'school_class_id' => $school_class->id,
-                    'academic_year_id' => $academic_year->id,
-                    'status' => null,
+            // Siapkan data untuk siswa yang belum ada di kelas baru
+            foreach ($studentIds as $studentId) {
+                if (!in_array($studentId, $existingAssignments)) {
+                    $studentClassData[] = [
+                        'student_id' => $studentId,
+                        'school_class_id' => $school_class->id,
+                        'academic_year_id' => $academic_year->id,
+                        'status' => null,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+            }
+    
+            // Insert data siswa baru ke kelas baru jika ada
+            if (!empty($studentClassData)) {
+                StudentClass::insert($studentClassData);
+    
+                // Update grade siswa yang baru ditambahkan
+                Student::whereIn('id', $studentIds)->update(['grade' => $school_class->grade]);
+    
+                // Ambil semua data StudentClass baru yang baru dimasukkan
+                $newStudentClasses = StudentClass::where('academic_year_id', $academic_year->id)
+                    ->whereIn('student_id', $studentIds)
+                    ->get();
+    
+                // Buat student fee untuk siswa yang baru ditambahkan
+                $this->create_student_fee($academic_year->id, $newStudentClasses);
+            } else {
+                DB::rollBack(); // Batalkan jika tidak ada siswa yang bisa ditambahkan
+                return redirect()->back()->with('error', 'Tidak ada siswa yang dapat ditambahkan ke kelas baru.');
+            }
+    
+            DB::commit(); // Commit transaksi jika semuanya berhasil
+            return redirect()->back()->with('success', 'Status siswa berhasil diperbarui.');
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback jika terjadi error
+            Log::error('Error demoting students: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui status siswa.');
+        }
+    }
+    
+
+    public function create_student_fee($academic_year_id, $studentClassData)
+    {
+        $academicYear = AcademicYear::findOrFail($academic_year_id);
+
+        $start_month = $academicYear->start_month;
+        $end_month = $academicYear->end_month;
+        $start_year = $academicYear->start_year;
+        $end_year = $academicYear->end_year;
+
+        $feeData = [];
+
+        foreach ($studentClassData as $student) {
+            $current_month = $start_month;
+            $current_year = $start_year;
+
+            while (true) {
+                $feeData[] = [
+                    'academic_year_id' => $academic_year_id,
+                    'student_id' => $student['student_id'], // Sesuaikan key
+                    'month_number' => $current_month,
+                    'month_name' => $this->getMonthName($current_month),
+                    'year' => $current_year,
                     'created_at' => now(),
-                    'updated_at' => now()
+                    'updated_at' => now(),
                 ];
+
+                if ($current_month == $end_month && $current_year == $end_year) {
+                    break;
+                }
+
+                $current_month++;
+                if ($current_month > 12) {
+                    $current_month = 1;
+                    $current_year++;
+                }
             }
         }
 
-        if (!empty($studentClassData)) {
-            StudentClass::insert($studentClassData);
-        } else {
-            return redirect()->back()->with('error', 'Tidak ada siswa yang dapat ditambahkan ke kelas yang baru');
-        }
-        return redirect()->back()->with('success','Status siswa berhasil diperbarui.');
+        StudentFee::insert($feeData);
     }
+
+    private function getMonthName($month_number)
+    {
+        $months = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember',
+        ];
+
+        return $months[$month_number] ?? 'Unknown';
+    }
+
+
 }

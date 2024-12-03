@@ -33,7 +33,7 @@
                 @include('layouts.navigation')
             @endrole
 
-            @role('applicant')
+            @role('parent')
                 @include('layouts.front-navigation')
             @endrole
             @endauth

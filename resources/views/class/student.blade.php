@@ -196,7 +196,7 @@
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap text-center">
                                         <div class="flex justify-center space-x-2">
-                                            <form action="{{ route('student-classes.destroy', $student) }}"
+                                            <form action="{{ route('student-classes.delete', [$student,$academicYear]) }}"
                                                 method="POST" class="inline-block"
                                                 onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                                 @csrf
@@ -445,7 +445,7 @@
             </form>
         </div>
     </div>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const openModalBtn = document.getElementById('open-demot');

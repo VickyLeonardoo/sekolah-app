@@ -8,8 +8,11 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StudentClassController;
 use App\Http\Controllers\TeacherClassController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\UserTransactionController;
 use App\Models\TeacherClass;
 
 Route::get('/', function () {
@@ -67,19 +70,36 @@ Route::middleware('auth')->group(function () {
         ->name('student-classes.set.promote')
         ->middleware('role:superadmin|admin');
 
-    Route::resource('student-classes', StudentClassController::class)
-        ->middleware('role:superadmin|admin');
-
-    Route::resource('teacher-classes', TeacherClassController::class)
-        ->middleware('role:superadmin|admin');
-    
     Route::get('/student-classes/graduated/{ids}/', [StudentClassController::class, 'set_graduated'])
         ->name('student-classes.set.graduated')
+        ->middleware('role:superadmin|admin');
+
+    Route::delete('/student-classes/delete/{student_id}/{academic_year_id}',[StudentClassController::class, 'destroy'])
+        ->name('student-classes.delete')
         ->middleware('role:superadmin|admin');
 
     Route::get('/student-classes/demoted/{ids}/{classId}/{promotedYear}', [StudentClassController::class, 'set_demoted'])
         ->name('student-classes.set.demoted')
         ->middleware('role:superadmin|admin');
+
+    Route::resource('student-classes', StudentClassController::class)
+        ->middleware('role:superadmin|admin');
+
+    Route::resource('teacher-classes', TeacherClassController::class)
+        ->middleware('role:superadmin|admin');
+
+    Route::resource('transaction', TransactionController::class)
+        ->middleware('role:superadmin|admin');
+
+    Route::prefix('client')->name('client.')->group(function () {
+        Route::resource('transaction',UserTransactionController::class)
+        ->middleware('role:parent');
+
+        Route::resource('dashboard',HomeController::class)
+        ->middleware('role:parent');
+    });
+
 });
+
 
 require __DIR__.'/auth.php';

@@ -36,7 +36,7 @@
                         <p class="text-xl mb-8 text-gray-100">Nikmati kemudahan pembayaran SPP dengan sistem digital
                             yang aman, cepat, dan efisien.</p>
                         <div class="flex gap-4">
-                            <a href="{{ route('login') }}"
+                            <a href="{{ route('client.transaction.create') }}"
                                 class="bg-yellow-400 text-gray-900 px-8 py-3 rounded-xl text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 inline-block shadow-lg hover:shadow-xl">
                                 Mulai Sekarang
                             </a>

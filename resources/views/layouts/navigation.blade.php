@@ -31,6 +31,9 @@
                     <x-nav-link :href="route('student.index')" :active="request()->routeIs('student*')">
                         {{ __('Siswa') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('transaction.index')" :active="request()->routeIs('transaction*')">
+                        {{ __('Transaksi') }}
+                    </x-nav-link>
                 </div>
             </div>
 

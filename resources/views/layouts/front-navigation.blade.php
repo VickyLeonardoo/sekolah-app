@@ -17,15 +17,12 @@
                         {{ __('Home') }}
                     </x-nav-link>
                     @auth
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('client.dashboard.index')" :active="request()->routeIs('client.dashboard*')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @endauth
-                    <x-nav-link :href="route('academic-year.index')" :active="request()->routeIs('academic-year*')">
+                    <x-nav-link :href="route('client.transaction.create')" :active="request()->routeIs('client.transaction.create')">
                         {{ __('Pembayaran') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('teacher.index')" :active="request()->routeIs('teacher*')">
-                        {{ __('Lacak Pembayaran') }}
                     </x-nav-link>
                     <x-nav-link :href="route('student.information')" :active="request()->routeIs('student.information')">
                         {{ __('Cek Informasi Siswa') }}
