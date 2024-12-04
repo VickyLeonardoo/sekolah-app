@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('month_number');
             $table->string('month_name');
             $table->integer('year');
+            $table->boolean('is_paid')->default(false);
             $table->timestamps();
         });
     }

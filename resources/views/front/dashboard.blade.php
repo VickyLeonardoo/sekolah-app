@@ -1,9 +1,9 @@
 <x-app-layout>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {{-- Kartu Total Transaksi --}}
-                <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg p-6 transform transition-all hover:scale-105">
+                {{-- <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg p-6 transform transition-all hover:scale-105">
                     <div class="flex items-center justify-between">
                         <div>
                             <h3 class="text-lg font-semibold text-gray-800">Total Transaksi</h3>
@@ -18,14 +18,14 @@
                     <div class="mt-4 text-sm text-gray-500">
                         <span class="text-green-500 font-semibold">+12.5%</span> dari bulan lalu
                     </div>
-                </div>
+                </div> --}}
 
                 {{-- Kartu Pembayaran Mendatang --}}
                 <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg p-6 transform transition-all hover:scale-105">
                     <div class="flex items-center justify-between">
                         <div>
                             <h3 class="text-lg font-semibold text-gray-800">Pembayaran Mendatang</h3>
-                            <p class="text-3xl font-bold text-green-600 mt-2">Rp 1.500.000</p>
+                            <p class="text-3xl font-bold text-green-600 mt-2">{{ $upcomingCount }}</p>
                         </div>
                         <div class="bg-green-100 p-3 rounded-full">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -33,9 +33,7 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="mt-4 text-sm text-gray-500">
-                        Jatuh tempo dalam 30 hari
-                    </div>
+                    
                 </div>
 
                 {{-- Kartu Riwayat Pembayaran --}}
@@ -43,7 +41,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <h3 class="text-lg font-semibold text-gray-800">Riwayat Pembayaran</h3>
-                            <p class="text-3xl font-bold text-purple-600 mt-2">5 Transaksi</p>
+                            <p class="text-3xl font-bold text-purple-600 mt-2">{{ $transactionCount }}</p>
                         </div>
                         <div class="bg-purple-100 p-3 rounded-full">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -67,17 +65,17 @@
                     <div class="flex items-center space-x-6">
                         <div class="flex-shrink-0">
                             <img 
-                                src="/api/placeholder/200/200" 
+                                src="{{ Storage::url($student->photo) }}" 
                                 alt="Foto Siswa" 
                                 class="w-32 h-32 rounded-full object-cover border-4 border-gray-200"
                             >
                         </div>
                         <div>
-                            <h4 class="text-2xl font-bold text-gray-800">Muhammad Rizky</h4>
+                            <h4 class="text-2xl font-bold text-gray-800">{{ $student->name }}</h4>
                             <div class="text-sm text-gray-600 space-y-1 mt-2">
-                                <p><strong>NIS:</strong> 2024001</p>
-                                <p><strong>Kelas:</strong> 11 RPL</p>
-                                <p><strong>Jurusan:</strong> Rekayasa Perangkat Lunak</p>
+                                <p><strong>NIS:</strong> {{ $student->identity_no }}</p>
+                                <p><strong>Kelas:</strong> {{ $student->grade }}</p>
+                                <p><strong>Jurusan:</strong> {{ $student->major->name }}</p>
                             </div>
                         </div>
                     </div>
@@ -87,19 +85,21 @@
                         <div class="grid grid-cols-2 gap-4 text-sm">
                             <div>
                                 <p class="font-semibold text-gray-600">Jenis Kelamin</p>
-                                <p class="text-gray-800">Laki-laki</p>
+                                <p class="text-gray-800">{{ $student->gender == 'Male' ? 'Laki - Laki':'Perempuan'}}</p>
                             </div>
                             <div>
                                 <p class="font-semibold text-gray-600">Tanggal Lahir</p>
-                                <p class="text-gray-800">15 Maret 2006</p>
+                                <p class="text-gray-800">@formatDob($student->dob)</p>
                             </div>
                             <div>
                                 <p class="font-semibold text-gray-600">Agama</p>
-                                <p class="text-gray-800">Islam</p>
+                                <p class="text-gray-800">
+                                    {{ in_array($student->religion, ['Protestan', 'Katolik']) ? 'Kristen ' . $student->religion : $student->religion }}
+                                </p>
                             </div>
                             <div>
                                 <p class="font-semibold text-gray-600">No. Telepon</p>
-                                <p class="text-gray-800">0812-3456-7890</p>
+                                <p class="text-gray-800">{{ $student->phone != '' ? $student->phone:'-'}}</p>
                             </div>
                         </div>
                     </div>
@@ -112,60 +112,18 @@
                         <div>
                             <h5 class="font-semibold text-gray-700 mb-2">Ayah</h5>
                             <div class="text-sm text-gray-600 space-y-1">
-                                <p><strong>Nama:</strong> Budi Santoso</p>
-                                <p><strong>No. Telepon:</strong> 0811-2345-6789</p>
+                                <p><strong>Nama:</strong> {{ $student->father_name }}</p>
+                                <p><strong>No. Telepon:</strong> {{ $student->father_phone }}</p>
                             </div>
                         </div>
                         <div>
                             <h5 class="font-semibold text-gray-700 mb-2">Ibu</h5>
                             <div class="text-sm text-gray-600 space-y-1">
-                                <p><strong>Nama:</strong> Sri Rahayu</p>
-                                <p><strong>No. Telepon:</strong> 0822-3456-7890</p>
+                                <p><strong>Nama:</strong> {{ $student->mother_name }}</p>
+                                <p><strong>No. Telepon:</strong> {{ $student->mother_phone }}7890</p>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            {{-- Tabel Rincian Pembayaran --}}
-            <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg p-6 mt-6">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4">Rincian Pembayaran</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-600">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                            <tr>
-                                <th scope="col" class="px-6 py-3">Bulan</th>
-                                <th scope="col" class="px-6 py-3">Tanggal</th>
-                                <th scope="col" class="px-6 py-3">Jumlah</th>
-                                <th scope="col" class="px-6 py-3">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="bg-white border-b hover:bg-gray-50">
-                                <td class="px-6 py-4">Januari 2024</td>
-                                <td class="px-6 py-4">15 Jan 2024</td>
-                                <td class="px-6 py-4">Rp 750.000</td>
-                                <td class="px-6 py-4">
-                                    <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Lunas</span>
-                                </td>
-                            </tr>
-                            <tr class="bg-white border-b hover:bg-gray-50">
-                                <td class="px-6 py-4">Desember 2023</td>
-                                <td class="px-6 py-4">15 Des 2023</td>
-                                <td class="px-6 py-4">Rp 750.000</td>
-                                <td class="px-6 py-4">
-                                    <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Lunas</span>
-                                </td>
-                            </tr>
-                            <tr class="bg-white border-b hover:bg-gray-50">
-                                <td class="px-6 py-4">November 2023</td>
-                                <td class="px-6 py-4">15 Nov 2023</td>
-                                <td class="px-6 py-4">Rp 750.000</td>
-                                <td class="px-6 py-4">
-                                    <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Lunas</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>

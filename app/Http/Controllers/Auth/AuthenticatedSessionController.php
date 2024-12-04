@@ -28,6 +28,12 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if (auth()->user()->hasRole('parent')) {
+            // Redirect ke halaman profil applicant
+            return redirect()->intended(route('client.dashboard.index'));
+        }
+        
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

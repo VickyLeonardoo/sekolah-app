@@ -25,7 +25,7 @@ class StudentUpdateRequest extends FormRequest
         $studentId = $this->route('student'); // Ambil ID murid dari route
 
         return [
-            'identity_no' => ['required',Rule::unique('users')->ignore($studentId)],
+            'identity_no' => ['required',Rule::unique('students')->ignore($studentId)],
             'name' => ['required'],
             'dob' => ['required'],
             'gender' => ['required'],

@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Home;
+use App\Models\Student;
+use App\Models\StudentFee;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -13,54 +17,14 @@ class HomeController extends Controller
     public function index()
     {
         //
-        return view('front.dashboard');
+        $student = Student::where('identity_no',Auth::user()->identity_no)->first();
+        $upcomingPayment = StudentFee::where('student_id', $student->id)->where('is_paid', 'false')->count();
+        $transaction = Transaction::where('user_id',Auth::user()->id)->where('status','approved')->count();
+        return view('front.dashboard',[
+            'student' => $student,
+            'upcomingCount' => $upcomingPayment,
+            'transactionCount' => $transaction,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Home $home)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Home $home)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Home $home)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Home $home)
-    {
-        //
-    }
 }

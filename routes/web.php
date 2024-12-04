@@ -14,6 +14,7 @@ use App\Http\Controllers\TeacherClassController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserTransactionController;
 use App\Models\TeacherClass;
+use App\Models\UserTransaction;
 
 Route::get('/', function () {
     return view('welcome');
@@ -84,7 +85,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('student-classes', StudentClassController::class)
         ->middleware('role:superadmin|admin');
-
+        
     Route::resource('teacher-classes', TeacherClassController::class)
         ->middleware('role:superadmin|admin');
 
@@ -92,6 +93,10 @@ Route::middleware('auth')->group(function () {
         ->middleware('role:superadmin|admin');
 
     Route::prefix('client')->name('client.')->group(function () {
+        Route::put('/transaction/cancel/{transaction:id}',[UserTransactionController::class,'set_cancel'])
+        ->middleware('role:parent')
+        ->name('transaction.cancel');
+
         Route::resource('transaction',UserTransactionController::class)
         ->middleware('role:parent');
 

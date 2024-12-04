@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('user_transactions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('transaction_id')->constrained();
+            $table->foreignId('student_fee_id')->constrained();
             $table->timestamps();
         });
     }

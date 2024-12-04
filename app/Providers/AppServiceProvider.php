@@ -20,11 +20,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Blade::directive('formatDob', function ($dob) {
+            return "<?php echo \Carbon\Carbon::parse($dob)->translatedFormat('d F Y'); ?>";
+        });
+        
         Blade::directive('nameMonth', function ($month) {
             return "<?php echo \Carbon\Carbon::createFromFormat('m', $month)->translatedFormat('F'); ?>";
         });
 
         Blade::directive('rupiah', function ($amount) {
+            return "<?php echo 'Rp. ' . number_format($amount, 0, ',', '.'); ?>";
+        });
+
+        Blade::directive('formatRupiah', function ($amount) {
             return "<?php echo 'Rp. ' . number_format($amount, 0, ',', '.'); ?>";
         });
         

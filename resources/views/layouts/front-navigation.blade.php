@@ -21,6 +21,9 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @endauth
+                    <x-nav-link :href="route('client.transaction.index')" :active="request()->routeIs('client.transaction.index')">
+                        {{ __('Daftar Pembayaran') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('client.transaction.create')" :active="request()->routeIs('client.transaction.create')">
                         {{ __('Pembayaran') }}
                     </x-nav-link>

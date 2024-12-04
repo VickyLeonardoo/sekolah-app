@@ -17,10 +17,9 @@ return new class extends Migration
             $table->foreignId('student_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->float('amount',15,2);
-            $table->string('month');
-            $table->string('proof_image');
-            $table->enum('status',['pending','approved','rejected']);
-            $table->text('description');
+            $table->string('proof_image')->nullable();
+            $table->enum('status',['pending','approved','rejected','cancelled']);
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
