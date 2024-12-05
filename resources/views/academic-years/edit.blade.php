@@ -2,9 +2,9 @@
     <x-slot name="header">
         <div class="flex flex-row justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Add Department') }}
+                {{ __('Edit Tahun Ajaran') }}
             </h2>
-            <a href="{{ route('teacher.index') }}"
+            <a href="{{ route('academic-year.index') }}"
                 class="font-bold py-1 px-8 bg-indigo-700 text-white rounded-full flex items-center">
                 <i class="fas fa-arrow-left mr-2"></i>
                 Kembali
@@ -90,6 +90,19 @@
                         <x-text-input id="price" class="block mt-1 w-full" type="number" name="price"
                             value="{{ $academicYear->price }}" required autofocus autocomplete="price" />
                         <x-input-error :messages="$errors->get('price')" class="mt-2" />
+                    </div>
+
+                    <div class="mt-4">
+                        <x-input-label for="is_active" :value="__('Status')" />
+                        <select name="is_active" id="is_active" class="rounded-lg pl-3 w-full border border-slate-300">
+                            <option value="" disabled selected>Pilih Status</option>
+                            <option value="1" {{ $academicYear->is_active == true ? 'selected':'' }}>Aktif</option>
+                            <option value="0" {{ $academicYear->is_active == false ? 'selected':'' }}>Non-Aktif</option>
+                        </select>
+                        <x-input-error :messages="$errors->get('is_active')" class="mt-2" />
+                            @if (session('is_active'))
+                                <p class="text-red-600">{{ session('is_active') }}</p>
+                            @endif
                     </div>
 
                     <div class="flex items-center justify-end mt-4">

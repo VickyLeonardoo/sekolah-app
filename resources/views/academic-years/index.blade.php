@@ -56,6 +56,9 @@
                                 Biaya SPP</th>
                             <th
                                 class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs">
+                                Status</th>
+                            <th
+                                class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs">
                                 Aksi</th>
                         </tr>
                     </thead>
@@ -65,6 +68,13 @@
                                 <td class="border-b border-gray-200 px-6 py-4">Tahun ajaran {{ $academicYear->start_year }}/{{ $academicYear->end_year }}</td>
                                 <td class="border-b border-gray-200 px-6 py-4">@nameMonth($academicYear->start_month) {{ $academicYear->start_year }} - @nameMonth($academicYear->end_month) {{ $academicYear->end_year }} </td>
                                 <td class="border-b border-gray-200 px-6 py-4">@rupiah($academicYear->price)</td>
+                                <td class="border-b border-gray-200 px-6 py-4">
+                                    @if ($academicYear->is_active == true)
+                                        <span class="bg-green-100 text-green-800 font-medium mr-2 px-2.5 py-0.5 rounded">Aktif</span>
+                                    @else
+                                        <span class="bg-red-100 text-red-800 font-medium mr-2 px-2.5 py-0.5 rounded">Non-Aktif</span>
+                                    @endif
+                                </td>
                                 <td class="border-b border-gray-200 px-6 py-4">
                                     <a href="{{ route('academic-year.edit', $academicYear) }}" class="font-bold py-2 px-4 bg-indigo-700 hover:bg-indigo-400 text-white rounded-lg">Edit</a>
                                 </td>

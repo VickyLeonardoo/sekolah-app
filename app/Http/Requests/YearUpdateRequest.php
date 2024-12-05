@@ -27,6 +27,7 @@ class YearUpdateRequest extends FormRequest
             'start_month' => ['required','numeric','min:1','max:12'],
             'end_month' => ['required','numeric','min:1','max:12'],
             'price' => ['required','numeric'],
+            'is_active' => ['sometimes']
         ];
     }
 }

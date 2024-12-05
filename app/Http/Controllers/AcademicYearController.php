@@ -89,6 +89,12 @@ class AcademicYearController extends Controller
     public function update(YearUpdateRequest $request, AcademicYear $academicYear)
     {
         $data = $request->validated();
+        $checkActiveYear = AcademicYear::where('is_active',true)->first();
+        if ($data['is_active'] == '1') {
+            if ($checkActiveYear && $checkActiveYear->id != $academicYear->id) {
+                return redirect()->back()->with('is_active','Tahun ajaran aktif sudah ada')->withInput();
+            }
+        }
 
         $checkYear = AcademicYear::where('start_year',$data['start_year'])->where('id', '!=', $academicYear->id)->first();
         if ($checkYear) {
