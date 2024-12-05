@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="py-12 bg-gray-100 min-h-screen">
+    <div class="py-12 min-h-screen">
         <div class="max-w-xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow-2xl rounded-xl overflow-hidden">
                 {{-- Header Section --}}

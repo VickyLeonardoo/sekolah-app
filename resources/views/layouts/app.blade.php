@@ -30,7 +30,13 @@
         </style>
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-indigo-100 dark:bg-gray-900">
+        @role(['superadmin','admin','teacher'])
+            <div class="min-h-screen bg-indigo-100 dark:bg-gray-900">
+        @endrole
+        @role('parent')
+        <div class="min-h-screen bg-slate-200 dark:bg-gray-900">
+        
+        @endrole
             {{-- Untuk pengguna yang sudah login berdasarkan role --}}
             @auth
             @role(['superadmin', 'manager', 'admin', 'hr'])

@@ -1,19 +1,21 @@
 <x-app-layout>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @if($existTransaction)
+            @if ($existTransaction)
                 <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
                     <div class="flex">
                         <div class="flex-shrink-0">
                             <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                <path fill-rule="evenodd"
+                                    d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                    clip-rule="evenodd" />
                             </svg>
                         </div>
                         <div class="ml-3">
                             <p class="text-sm text-yellow-700">
-                                Kamu masih memiliki transaksi yang sedang berlangsung. 
-                                <a href="{{ route('client.transaction.show', $existTransaction->id) }}" 
-                                   class="font-medium underline text-yellow-700 hover:text-yellow-600">
+                                Kamu masih memiliki transaksi yang sedang berlangsung.
+                                <a href="{{ route('client.transaction.show', $existTransaction->id) }}"
+                                    class="font-medium underline text-yellow-700 hover:text-yellow-600">
                                     Periksa disini
                                 </a>
                             </p>
@@ -50,8 +52,9 @@
                             </div>
                             <div class="mt-4">
                                 <x-input-label for="month_count" :value="__('Bulan Dipilih')" />
-                                <x-text-input id="month_count" class="block mt-1 w-full" type="text" name="month_count"
-                                    value="" readonly required autofocus autocomplete="month_count" />
+                                <x-text-input id="month_count" class="block mt-1 w-full" type="text"
+                                    name="month_count" value="" readonly required autofocus
+                                    autocomplete="month_count" />
                                 <x-input-error :messages="$errors->get('month_count')" class="mt-2" />
                             </div>
                         </div>
@@ -97,11 +100,21 @@
                 // Pastikan pilihan sesuai urutan
                 for (let i = 0; i < selectedValues.length; i++) {
                     if (selectedValues[i] !== options[i]) {
-                        alert('Kamu harus membayar dari bulan pertama dan harus berurutan.');
-                        const removedValue = e.params.data.id; // Nilai yang salah
-                        // Hapus pilihan yang salah
-                        $(this).find(`option[value="${removedValue}"]`).prop('selected', false);
-                        $(this).trigger('change'); // Trigger ulang perubahan select2
+                        // Menggunakan SweetAlert2 sebagai pengganti alert
+                        Swal.fire({
+                            title: 'Peringatan!',
+                            text: 'Kamu harus membayar dari bulan pertama dan harus berurutan.',
+                            icon: 'warning',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                const removedValue = e.params.data.id; // Nilai yang salah
+                                // Hapus pilihan yang salah
+                                $(this).find(`option[value="${removedValue}"]`).prop('selected',
+                                    false);
+                                $(this).trigger('change'); // Trigger ulang perubahan select2
+                            }
+                        });
                         return; // Menghentikan eksekusi lebih lanjut
                     }
                 }

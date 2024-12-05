@@ -18,7 +18,7 @@ class UserTransactionController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::where('user_id',Auth::user()->id)->get();
+        $transactions = Transaction::where('user_id',Auth::user()->id)->orderBy('id','desc')->paginate(10);
         return view('front.transaction.index',[
             'transactions' => $transactions
         ]);
@@ -46,36 +46,46 @@ class UserTransactionController extends Controller
      */
     public function store(Request $request)
     {
-        $student = Student::where('identity_no',Auth::user()->identity_no)->first();
+        $student = Student::where('identity_no', Auth::user()->identity_no)->first();
 
         $academic_year = AcademicYear::where('is_active', true)->first();
 
         $data = $request->all();
 
-        $amount_all = 0;  // Inisialisasi dengan angka 0
+        $amount_all = 0;
         
         // Hitung jumlah bulan yang dipilih
-        $countFee = count($data['fee_id']); // Menghitung jumlah bulan yang dipilih
+        $countFee = count($data['fee_id']);
         
         // Hitung total biaya
         $amount_all = $countFee * $academic_year->price;
 
+        // Generate unique transaction_no
+        do {
+            $microtime = explode(' ', microtime());
+            $transaction_no = 'TXN' . 
+                            date('dmY') .  // tanggal, bulan, tahun
+                            date('His') .  // jam, menit, detik
+                            substr($microtime[0], 2, 4) . // 4 digit mikrodetik
+                            str_pad(mt_rand(0, 9999), 4, '0', STR_PAD_LEFT); // 4 digit random
+        } while (Transaction::where('transaction_no', $transaction_no)->exists());
+
         $transaction = Transaction::create([
-            'transaction_no' => 'TXN-' . rand(1000, 9999) . '2024',
+            'transaction_no' => $transaction_no,
             'student_id' => $student->id,
             'user_id' => Auth::user()->id,
             'amount' => $amount_all,
             'status' => 'Pending',
-            'description' => 'NULLABLE'
         ]);
 
         foreach ($data['fee_id'] as $fee) {
-            $student_fee_transaction = UserTransaction::create([
+            UserTransaction::create([
                 'transaction_id' => $transaction->id,
                 'student_fee_id' => $fee,
             ]);
         }
-        return redirect()->route('client.dashboard.index')->with('success','Formulir transaksi berhasil dibuat. Silahkan lakukan pembayaran dan lakukan upload bukti pembayaran');
+
+        return redirect()->route('client.dashboard.index')->with('success', 'Formulir transaksi berhasil dibuat. Silahkan lakukan pembayaran dan lakukan upload bukti pembayaran');
     }
 
     /**

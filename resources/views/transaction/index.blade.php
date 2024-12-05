@@ -22,7 +22,14 @@
             @endif
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-10 flex flex-col gap-y-5">
                 <div class="flex flex-col md:flex-row justify-between items-center mb-6">
-                    <form method="GET" action="{{ route('major.index') }}" class="flex w-full md:w-auto ml-auto">
+                    <!-- Tombol Riwayat Transaksi -->
+                    <a href="{{ route('transaction.history') }}"
+                        class="border border-indigo-600 text-indigo-600 px-4 py-2 rounded-full hover:bg-indigo-600 hover:text-white transition duration-300">
+                        Riwayat Transaksi
+                    </a>
+            
+                    <!-- Form Pencarian -->
+                    <form method="GET" action="{{ route('transaction.index') }}" class="flex w-full md:w-auto ml-auto">
                         <input type="text" name="search" placeholder="Cari data transaksi"
                             class="rounded-l-full w-full md:w-64 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                             value="{{ request('search') }}">
@@ -47,6 +54,9 @@
                                 Nama</th>
                             <th
                                 class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs">
+                                Siswa</th>
+                            <th
+                                class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs">
                                 Nominal</th>
                             <th
                                 class="bg-indigo-50 sticky top-0 border-b border-gray-200 px-6 py-3 text-indigo-600 font-bold tracking-wider uppercase text-xs">
@@ -58,13 +68,15 @@
                             <tr>
                                 <td class="border-b border-gray-200 px-6 py-4">{{ $transaction->transaction_no }}</td>
                                 <td class="border-b border-gray-200 px-6 py-4">{{ $transaction->user->name }}</td>
+                                <td class="border-b border-gray-200 px-6 py-4">{{ $transaction->student->name }}</td>
+                                <td class="border-b border-gray-200 px-6 py-4">@rupiah($transaction->amount)</td>
                                 <td class="border-b border-gray-200 px-6 py-4">
                                     <a href="{{ route('transaction.show', $transaction) }}" class="font-bold py-2 px-4 bg-indigo-700 hover:bg-indigo-400 text-white rounded-lg">View</a>
                                 </td>
                             <tr>
                         @empty
                         <tr>
-                            <td colspan="4" class="text-center border-b border-gray-200 px-6 py-4">Data tidak ditemukan</td>
+                            <td colspan="5" class="text-center border-b border-gray-200 px-6 py-4">Data tidak ditemukan</td>
                         </tr>
                         @endforelse
                     </tbody>

@@ -55,7 +55,7 @@
                                             <span class="bg-yellow-100 text-yellow-800 font-medium mr-2 px-2.5 py-0.5 rounded">Belum upload bukti pembayaran</span>
                                         @elseif ($transaction->status == 'pending' && $transaction->proof_image == true)
                                             <span class="bg-indigo-100 text-indigo-800 font-medium mr-2 px-2.5 py-0.5 rounded">Menunggu Konfirmasi</span>
-                                        @elseif ($transaction->status == 'Approved')
+                                        @elseif ($transaction->status == 'approved')
                                             <span class="bg-green-100 text-green-800 font-medium mr-2 px-2.5 py-0.5 rounded">Berhasil</span>
                                         @else
                                             <span class="bg-red-100 text-red-800 font-medium mr-2 px-2.5 py-0.5 rounded">Ditolak</span>
@@ -63,7 +63,7 @@
                                     </td>
                                     <td class="px-6 py-4">
                                         @if ($transaction->status == 'pending' && !$transaction->proof_image)
-                                            <a href="{{ route('client.transaction.show',$transaction) }}" class="font-bold py-2 px-6 bg-indigo-700 text-white rounded-full hover:bg-indigo-300">
+                                            <a href="{{ route('client.transaction.show',$transaction) }}" class="font-bold py-2 px-6 bg-yellow-500 text-white rounded-full hover:bg-yellow-300">
                                                 Upload Bukti Pembayaran
                                             </a>
                                         @else
@@ -82,6 +82,9 @@
                         
                     </table>
                 </div>
+                <div class="mt-3">
+                    {{ $transactions->links() }}
+                </divc>
             </div>
         </div>
     </div>

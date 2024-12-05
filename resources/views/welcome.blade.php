@@ -38,7 +38,7 @@
                         <div class="flex gap-4">
                             <a href="{{ route('client.transaction.create') }}"
                                 class="bg-yellow-400 text-gray-900 px-8 py-3 rounded-xl text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 inline-block shadow-lg hover:shadow-xl">
-                                Mulai Sekarang
+                                Bayar Sekarang
                             </a>
                             <a href="#layanan"
                                 class="bg-white/10 backdrop-blur-sm border-2 border-white text-white px-8 py-3 rounded-xl text-lg font-semibold hover:bg-white/20 transition-all duration-300 inline-block">
@@ -207,7 +207,7 @@
                     <div class="flex items-center mb-6">
                         <img src="https://www.svgrepo.com/show/501266/school.svg" alt="School Logo"
                             class="h-10 w-10 mr-3">
-                        <span class="text-2xl font-bold">Nama Sekolah</span>
+                        <span class="text-2xl font-bold">SMK NEGERI 01 BATANG ANGKOLA</span>
                     </div>
                     <p class="text-gray-400">Memberikan pendidikan berkualitas dan pelayanan terbaik untuk masa depan
                         yang lebih cerah.</p>
@@ -251,7 +251,7 @@
             </div>
             <div class="border-t border-gray-800 pt-8 mt-8">
                 <div class="flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-gray-400">&copy; 2024 Nama Sekolah. All Rights Reserved.</p>
+                    <p class="text-gray-400">&copy; 2024 SMK NEGERI 01 BATANG ANGKOLA. All Rights Reserved.</p>
                     <div class="flex space-x-6 mt-4 md:mt-0">
                         <a href="#"
                             class="text-gray-400 hover:text-white transition-colors duration-300">Privacy Policy</a>

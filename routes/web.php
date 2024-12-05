@@ -9,6 +9,7 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StudentClassController;
 use App\Http\Controllers\TeacherClassController;
 use App\Http\Controllers\TransactionController;
@@ -89,7 +90,22 @@ Route::middleware('auth')->group(function () {
     Route::resource('teacher-classes', TeacherClassController::class)
         ->middleware('role:superadmin|admin');
 
+    Route::put('/transaction/success/{transaction:id}',[TransactionController::class, 'set_approved'])
+        ->middleware('role:superadmin|admin')
+        ->name('transaction.approve');
+
+    Route::put('/transaction/reject/{transaction:id}',[TransactionController::class, 'set_rejected'])
+        ->middleware('role:superadmin|admin')
+        ->name('transaction.reject');
+
+    Route::get('/transaction/history',[TransactionController::class, 'history'])
+        ->middleware('role:superadmin|admin')
+        ->name('transaction.history');
+
     Route::resource('transaction', TransactionController::class)
+        ->middleware('role:superadmin|admin');
+
+    Route::resource('report',ReportController::class)
         ->middleware('role:superadmin|admin');
 
     Route::prefix('client')->name('client.')->group(function () {
@@ -103,7 +119,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('dashboard',HomeController::class)
         ->middleware('role:parent');
     });
-
+ 
 });
 
 

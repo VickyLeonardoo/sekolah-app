@@ -17,4 +17,8 @@ class StudentFee extends Model
     public function academicYear(){
         return $this->belongsTo(AcademicYear::class);
     }
+
+    public function user_transaction(){
+        return $this->hasMany(UserTransaction::class);
+    }
 }
