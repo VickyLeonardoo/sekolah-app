@@ -2,9 +2,9 @@
     <x-slot name="header">
         <div class="flex flex-row justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Add Department') }}
+                {{ __('Tambah Jurusan') }}
             </h2>
-            <a href="{{ route('teacher.index') }}"
+            <a href="{{ route('major.index') }}"
                 class="font-bold py-1 px-8 bg-indigo-700 text-white rounded-full flex items-center">
                 <i class="fas fa-arrow-left mr-2"></i>
                 Kembali

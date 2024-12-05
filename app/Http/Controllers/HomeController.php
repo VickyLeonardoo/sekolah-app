@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Home;
 use App\Models\Student;
+use App\Models\Teacher;
 use App\Models\StudentFee;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -27,4 +29,28 @@ class HomeController extends Controller
         ]);
     }
 
+    public function index_admin(){
+        $teachersCount = Teacher::count();
+
+        $todayTransactionsCount = Transaction::where('status', 'pending')
+            ->whereDate('created_at', Carbon::today())
+            ->whereNotNull('proof_image')
+            ->count();
+
+        $todayTransactions = Transaction::where('status', 'pending')
+            ->whereDate('created_at', Carbon::today())
+            ->whereNotNull('proof_image')
+            ->paginate(10);
+
+        $totalPendingTransactionCount = Transaction::where('status','pending')->whereNotNull('proof_image')->count();
+
+         return view('dashboard',[
+             'teachersCount' => $teachersCount,
+             'todayTransactionsCount' => $todayTransactionsCount,
+             'totalPendingTransactionCount' => $totalPendingTransactionCount,
+             'transactions' => $todayTransactions 
+         ]);
+    }
+
 }
+ 
