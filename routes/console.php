@@ -9,4 +9,6 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 
-Schedule::command('notify:cron')->everyMinute();
+// Schedule::command('notify:cron')->everyMinute();
+
+Schedule::command('notify:cron')->monthlyOn(5, '00:00');
