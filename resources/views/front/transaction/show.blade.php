@@ -133,8 +133,17 @@
                     @endif
 
                     {{-- Upload Proof Section --}}
-                    @if ($transaction->status == 'pending')
+                    @if ($transaction->proof_image == '')
+                   
                         <div class="mt-4">
+                            <div class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-200 dark:bg-gray-800 dark:text-yellow-400 relative"
+                            role="alert">
+                            <span class="font-medium"><strong>Perhatian!</strong><br>
+                                Sebelum menunggah bukti pembayaran pastikan bukti pembayaran yang dimasukkan valid, karna anda tidak dapat mengubahnya kembali jika sudah di upload! Jika terlanjur memasukkan bukti pembayaran yang valid, Anda dapat membatalkan transaksi dan membuat ulang transaksi. <br><u>Abaikan pesan ini jika bukti yang Anda upload sudah valid.</u>
+                            </span>
+                            <!-- Tombol silang dengan SVG -->
+                            
+                        </div>
                             <form action="{{ route('client.transaction.update', $transaction->id) }}" method="POST"
                                 enctype="multipart/form-data" class="bg-gray-50 rounded-lg p-6 border border-gray-200">
                                 @csrf

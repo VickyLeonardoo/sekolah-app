@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'Sistem Pembayaran SPP') }}</title>
+    <link rel="icon" href="{{ asset('asset/img/favico.png') }}" type="image/png">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -18,40 +20,65 @@
     <main>
         <!-- Hero Section dengan Glassmorphism -->
         <!-- Hero Section dengan Natural Overlay -->
-        <section class="min-h-screen relative overflow-hidden">
-            <!-- Background dengan natural gradient overlay -->
-            <div class="absolute inset-0 bg-gradient-to-r from-gray-900/70 to-gray-800/70"></div>
-            <div class="absolute inset-0">
-                <div
-                    class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2340&auto=format&fit=crop')] bg-cover bg-center mix-blend-overlay opacity-90">
+        <section 
+    x-data="backgroundSlider()" 
+    x-init="startSlider()" 
+    class="min-h-screen relative overflow-hidden"
+>
+    <!-- Background dengan natural gradient overlay -->
+    <div class="absolute inset-0 bg-gradient-to-r from-gray-900/70 to-gray-800/70"></div>
+    
+    <!-- Dynamic Background Image -->
+    <div 
+        x-ref="backgroundImage"
+        class="absolute inset-0 bg-cover bg-center mix-blend-overlay opacity-90 transition-opacity duration-1000"
+        :style="`background-image: url('${backgrounds[currentIndex]}');`"
+    ></div>
+    
+    <!-- Content -->
+    <div class="relative h-full min-h-screen flex items-center mt-28">
+        <div class="container mx-auto px-4">
+            <div class="max-w-2xl backdrop-blur-sm bg-black/10 p-8 rounded-2xl" data-aos="fade-up">
+                <h1 class="text-5xl font-bold mb-6 text-white leading-tight">Sistem Pembayaran SPP <span
+                        class="text-yellow-400">Digital</span></h1>
+                <p class="text-xl mb-8 text-gray-100">Nikmati kemudahan pembayaran SPP dengan sistem digital
+                    yang aman, cepat, dan efisien.</p>
+                <div class="flex gap-4">
+                    <a href="{{ route('client.transaction.create') }}"
+                        class="bg-yellow-400 text-gray-900 px-8 py-3 rounded-xl text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 inline-block shadow-lg hover:shadow-xl">
+                        Bayar Sekarang
+                    </a>
+                    <a href="#layanan"
+                        class="bg-white/10 backdrop-blur-sm border-2 border-white text-white px-8 py-3 rounded-xl text-lg font-semibold hover:bg-white/20 transition-all duration-300 inline-block">
+                        Pelajari Lebih Lanjut
+                    </a>
                 </div>
             </div>
+        </div>
+    </div>
+    
+    <!-- Natural gradient fade -->
+    <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent"></div>
 
-            <!-- Content -->
-            <div class="relative h-full min-h-screen flex items-center">
-                <div class="container mx-auto px-4">
-                    <div class="max-w-2xl backdrop-blur-sm bg-black/10 p-8 rounded-2xl" data-aos="fade-up">
-                        <h1 class="text-5xl font-bold mb-6 text-white leading-tight">Sistem Pembayaran SPP <span
-                                class="text-yellow-400">Digital</span></h1>
-                        <p class="text-xl mb-8 text-gray-100">Nikmati kemudahan pembayaran SPP dengan sistem digital
-                            yang aman, cepat, dan efisien.</p>
-                        <div class="flex gap-4">
-                            <a href="{{ route('client.transaction.create') }}"
-                                class="bg-yellow-400 text-gray-900 px-8 py-3 rounded-xl text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 inline-block shadow-lg hover:shadow-xl">
-                                Bayar Sekarang
-                            </a>
-                            <a href="#layanan"
-                                class="bg-white/10 backdrop-blur-sm border-2 border-white text-white px-8 py-3 rounded-xl text-lg font-semibold hover:bg-white/20 transition-all duration-300 inline-block">
-                                Pelajari Lebih Lanjut
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Natural gradient fade -->
-            <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent"></div>
-        </section>
+    <script>
+        function backgroundSlider() {
+            return {
+                backgrounds: [
+                    '{{ asset('asset/img/background.jpg') }}',
+                    '{{ asset('asset/img/background_1.jpg') }}',
+                    '{{ asset('asset/img/background_2.jpg') }}'
+                ],
+                currentIndex: 0,
+                
+                startSlider() {
+                    setInterval(() => {
+                        this.currentIndex = (this.currentIndex + 1) % this.backgrounds.length;
+                    }, 5000); // Ganti gambar setiap 5 detik
+                }
+            }
+        }
+    </script>
+</section>
 
         <!-- Layanan Section dengan Card Modern -->
         <section id="layanan" class="py-24 bg-white">
@@ -205,7 +232,7 @@
             <div class="grid md:grid-cols-3 gap-12 mb-8">
                 <div>
                     <div class="flex items-center mb-6">
-                        <img src="https://www.svgrepo.com/show/501266/school.svg" alt="School Logo"
+                        <img src="{{ asset('asset/img/favico.png') }}" alt="School Logo"
                             class="h-10 w-10 mr-3">
                         <span class="text-2xl font-bold">SMK NEGERI 01 BATANG ANGKOLA</span>
                     </div>

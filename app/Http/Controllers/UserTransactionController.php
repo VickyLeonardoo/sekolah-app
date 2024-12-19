@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\TransactionMail;
 use App\Models\Student;
 use App\Models\StudentFee;
 use App\Models\Transaction;
 use App\Models\AcademicYear;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\UserTransaction;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class UserTransactionController extends Controller
@@ -130,8 +133,11 @@ class UserTransactionController extends Controller
             $imagePath = $request->file('proof_image')->store('image-proof', 'public');
             $data['proof_image'] = $imagePath;
         }
-
         $transaction->update($data);
+
+        $emails = User::role(['admin', 'superadmin'])->pluck('email');
+        Mail::to($emails)->send(new TransactionMail($transaction));
+
         return redirect()->route('client.transaction.index')->with('success','Upload bukti pembayaran berhasil, menunggu konfirmasi pihak administrasi');
 
     }

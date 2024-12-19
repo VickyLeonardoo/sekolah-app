@@ -23,9 +23,9 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-10 flex flex-col gap-y-5">
                 <div class="flex flex-col md:flex-row justify-between items-center mb-6">
                     <!-- Tombol Riwayat Transaksi -->
-                    <a href="{{ route('transaction.history') }}"
+                    <a href="{{ route('transaction.index') }}"
                         class="border border-indigo-600 text-indigo-600 px-4 py-2 rounded-full hover:bg-indigo-600 hover:text-white transition duration-300">
-                        Riwayat Transaksi
+                        Transaksi
                     </a>
             
                     <!-- Form Pencarian -->

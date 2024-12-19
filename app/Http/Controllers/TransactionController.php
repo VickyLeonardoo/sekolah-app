@@ -47,7 +47,7 @@ class TransactionController extends Controller
     public function history(Request $request){
         // / Query dasar
         $transactions = Transaction::with(['student', 'user'])
-            ->whereIn('status', ['approved','cancelled']);
+            ->whereIn('status', ['approved','cancelled','rejected']);
 
         // Jika ada pencarian
         if ($request->has('search') && $request->search) {
