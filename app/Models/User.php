@@ -27,6 +27,8 @@ class User extends Authenticatable
         'password',
         'phone',
         'identity_no',
+        'position',
+        'is_internal',
     ];
 
     public function transaction(){

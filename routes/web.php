@@ -8,6 +8,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StudentClassController;
@@ -107,6 +108,9 @@ Route::middleware('auth')->group(function () {
         ->middleware('role:superadmin|admin');
 
     Route::resource('report',ReportController::class)
+        ->middleware('role:superadmin|admin');
+
+    Route::resource('account',AccountController::class)
         ->middleware('role:superadmin|admin');
 
     Route::prefix('client')->name('client.')->group(function () {

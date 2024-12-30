@@ -43,7 +43,7 @@ class NotifyCron extends Command
                                 ->where('is_paid', false)
                                 ->get();
 
-        $parent_emails = [];
+        $parent_emails = []; 
         $student_data = null;
 
         foreach ($unpaid_fees as $fee) {

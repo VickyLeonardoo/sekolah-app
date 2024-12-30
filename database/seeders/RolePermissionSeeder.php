@@ -37,7 +37,9 @@ class RolePermissionSeeder extends Seeder
             'phone' => '0123456789',
             'email' => 'sadmin@example.com',
             'password' => bcrypt('123'),
-            'email_verified_at' => '2021-01-01 00:00:00',
+            'email_verified_at' => '2021-01-01 00:00:00', 
+            'position' => 'Kepala Sekolah',
+            'is_internal' => true
         ]);
 
         $userParent = User::create([

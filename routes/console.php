@@ -11,4 +11,5 @@ Artisan::command('inspire', function () {
 
 // Schedule::command('notify:cron')->everyMinute();
 
-Schedule::command('notify:cron')->monthlyOn(5, '00:00');
+Schedule::command('notify:cron')->monthlyOn(5, '00:00'); 
+

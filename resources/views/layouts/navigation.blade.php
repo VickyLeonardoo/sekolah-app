@@ -57,9 +57,11 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            {{ __('Akun') }}
                         </x-dropdown-link>
-
+                        <x-dropdown-link :href="route('account.index')">
+                            {{ __('Kelola Akun') }}
+                        </x-dropdown-link>
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

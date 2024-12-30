@@ -21,7 +21,7 @@ class TeacherUpdateRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     // Suggested code may be subject to a license. Learn more: ~LicenseLog:2398870928.
-    // Suggested code may be subject to a license. Learn more: ~LicenseLog:2822780817.
+    // Suggested code may be subject to a license. Learn more: ~LicenseLog:2822780817. 
     public function rules(): array
     {
         $teacherId = $this->route('teacher'); // Ambil ID guru dari route
