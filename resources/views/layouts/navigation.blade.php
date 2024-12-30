@@ -16,8 +16,11 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('teacher.index')" :active="request()->routeIs('teacher*')">
+                    {{-- <x-nav-link :href="route('teacher.index')" :active="request()->routeIs('teacher*')">
                         {{ __('Guru') }}
+                    </x-nav-link> --}}
+                    <x-nav-link :href="route('account.index')" :active="request()->routeIs('account*')">
+                        {{ __('Akun') }}
                     </x-nav-link>
                     <x-nav-link :href="route('academic-year.index')" :active="request()->routeIs('academic-year*')">
                         {{ __('Tahun Ajaran') }}
@@ -58,9 +61,6 @@
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Akun') }}
-                        </x-dropdown-link>
-                        <x-dropdown-link :href="route('account.index')">
-                            {{ __('Kelola Akun') }}
                         </x-dropdown-link>
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">

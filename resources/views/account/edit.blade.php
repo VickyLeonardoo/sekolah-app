@@ -2,9 +2,9 @@
     <x-slot name="header">
         <div class="flex flex-row justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Tambah Akun') }}
+                {{ __('Edit Akun') }}
             </h2>
-            <a href="{{ route('account.index') }}"
+            <a href="{{ route('account.show',$user) }}"
                 class="font-bold py-1 px-8 bg-indigo-700 text-white rounded-full flex items-center">
                 <i class="fas fa-arrow-left mr-2"></i>
                 Kembali
@@ -94,6 +94,17 @@
                         <x-text-input id="position" class="block mt-1 w-full" type="text" name="position"
                             value="{{ $user->position }}" required autofocus autocomplete="position" />
                         <x-input-error :messages="$errors->get('position')" class="mt-2" />
+                    </div>
+
+                    <div class="mt-4">
+                        <x-input-label for="role" :value="__('Role')" />
+                        <select name="role" id="role" class="rounded-lg pl-3 w-full border border-slate-300">
+                            <option value="" selected disabled>{{ __('Pilih Role') }}</option>
+                            <option value="principal" {{ $user->getRoleNames()->first() == 'principal' ? 'selected':'' }}>Kepala Sekolah</option>
+                            <option value="admin" {{ $user->getRoleNames()->first() == 'admin' ? 'selected':'' }}>Administrasi</option>
+                        </select>
+
+                        <x-input-error :messages="$errors->get('role')" class="mt-2" />
                     </div>
 
                     <div class="flex items-center justify-end mt-4">

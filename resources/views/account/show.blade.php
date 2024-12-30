@@ -26,7 +26,7 @@
                             </div>
                             <div class="ml-4">
                                 <h2 class="text-2xl font-bold text-gray-900">{{ $user->name }}</h2>
-                                <p class="text-sm text-gray-500">{{ $user->position }}</p>
+                                <p class="text-sm text-gray-500">{{ $user->getRoleNames()->first() == 'principal' ? 'Kepala Sekolah':'Petugas Administrasi' }}</p>
                             </div>
                         </div>
                         <div class="flex space-x-3">

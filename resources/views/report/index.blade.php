@@ -42,11 +42,16 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-10 flex flex-col gap-y-5">
                 <form action="{{ route('report.store') }}" method="POST">
                     @csrf
+                    
                     <div class="mt-4">
-                        <x-input-label for="grade" :value="__('Kelas')" />
-                        <x-text-input id="grade" class="block mt-1 w-full" type="number" name="grade"
-                            :value="old('grade', request('grade'))" required autofocus autocomplete="grade" />
-                        <x-input-error :messages="$errors->get('grade')" class="mt-2" />
+                        <x-input-label for="school_class_id" :value="__('Kelas')" />
+                        <select name="school_class_id" id="school_class_id" class="rounded-lg pl-3 w-full border border-slate-300">
+                            <option value="" selected disabled>{{ __('Pilih Kelas') }}</option>
+                            @foreach ($classes as $class)
+                                <option value="{{ $class->id }}">{{ $class->grade }} {{ $class->name }}</option>    
+                            @endforeach
+                        </select>
+                        <x-input-error :messages="$errors->get('school_class_id')" class="mt-2" />
                     </div>
 
                     <div class="mt-4">

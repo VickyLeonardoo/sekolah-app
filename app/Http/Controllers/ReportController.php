@@ -7,6 +7,8 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\FeeReportExport;
+use App\Models\AcademicYear;
+use App\Models\SchoolClass;
 
 class ReportController extends Controller
 {
@@ -15,7 +17,10 @@ class ReportController extends Controller
      */
     public function index()
     {
-        return view('report.index');
+        $classes = SchoolClass::get();
+        return view('report.index',[
+            'classes' => $classes,
+        ]);
     }
 
     /**
@@ -32,11 +37,11 @@ class ReportController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'grade' => 'required',
+            'school_class_id' => 'required',
             'start_month' => 'required',
             'end_month' => 'required',
         ], [
-            'grade.required' => 'Kelas wajib diisi',
+            'school_class_id.required' => 'Kelas wajib diisi',
             'start_month.required' => 'Tanggal awal wajib diisi',
             'end_month.required' => 'Tanggal akhir wajib diisi',
         ]);
@@ -44,9 +49,24 @@ class ReportController extends Controller
         $startMonth = explode('-', $request->start_month)[1];
         $endMonth = explode('-', $request->end_month)[1];
 
-        $students = Student::where('grade', $request->grade)
-            ->with(['fee' => function ($query) use ($startMonth, $endMonth) {
+        $activeYear = AcademicYear::where('is_active', true)->first();
+
+        if (!$activeYear) {
+            return redirect()->back()->withErrors(['error' => 'Tahun akademik aktif tidak ditemukan.']);
+        }
+
+        // Ambil siswa yang memiliki fee yang sesuai kriteria
+        $students = Student::whereHas('student_classes', function ($query) use ($request) {
+                $query->where('school_class_id', $request->school_class_id);
+            })
+            ->whereHas('fee', function ($query) use ($startMonth, $endMonth, $activeYear) {
                 $query->whereBetween('month_number', [$startMonth, $endMonth])
+                    ->where('academic_year_id', $activeYear->id)
+                    ->where('is_paid', false);
+            })
+            ->with(['fee' => function ($query) use ($startMonth, $endMonth, $activeYear) {
+                $query->whereBetween('month_number', [$startMonth, $endMonth])
+                    ->where('academic_year_id', $activeYear->id)
                     ->where('is_paid', false);
             }])
             ->get()
@@ -54,6 +74,8 @@ class ReportController extends Controller
 
         return Excel::download(new FeeReportExport($students), 'fee_report.xlsx');
     }
+
+
 
 
     /**

@@ -29,6 +29,22 @@ class AccountUpdateRequest extends FormRequest
             'phone' => ['required', 'unique:users,phone,' . $id],
             'identity_no' => ['required', 'unique:users,identity_no,' . $id],
             'position' => ['required'],
+            'role' => ['required'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => __('Nama Lengkap harus diisi'),
+            'email.required' => __('Email harus diisi'),
+            'email.unique' => __('Email sudah terdaftar'),
+            'phone.required' => __('Nomor Ponsel harus diisi'),
+            'phone.unique' => __('Nomor Ponsel sudah terdaftar'),
+            'identity_no.required' => __('Nomor Induk Pegawai (NIP) harus diisi'),
+            'identity_no.unique' => __('Nomor Induk Pegawai sudah terdaftar'),
+            'position.required' => __('Jabatan harus diisi'),
+            'role.required' => __('Role harus diisi'),
         ];
     }
 }

@@ -67,7 +67,7 @@
                         <x-input-error :messages="$errors->get('identity_no')" class="mt-2" />
                     </div>
 
-                    <div class="mt-4">
+                    <div class="mt-4"> 
                         <x-input-label for="name" :value="__('Nama Lengkap')" />
                         <x-text-input id="name" class="block mt-1 w-full" type="text" name="name"
                             :value="old('name')" required autofocus autocomplete="name" />
@@ -93,6 +93,17 @@
                         <x-text-input id="position" class="block mt-1 w-full" type="text" name="position"
                             :value="old('position')" required autofocus autocomplete="position" />
                         <x-input-error :messages="$errors->get('position')" class="mt-2" />
+                    </div>
+
+                    <div class="mt-4">
+                        <x-input-label for="role" :value="__('Role')" />
+                        <select name="role" id="role" class="rounded-lg pl-3 w-full border border-slate-300">
+                            <option value="" selected disabled>{{ __('Pilih Role') }}</option>
+                            <option value="principal" {{ old('role') == 'principal' ? 'selected':'' }}>Kepala Sekolah</option>
+                            <option value="admin" {{ old('role') == 'admin' ? 'selected':'' }}>Administrasi</option>
+                        </select>
+
+                        <x-input-error :messages="$errors->get('role')" class="mt-2" />
                     </div>
 
                     <div class="flex items-center justify-end mt-4">

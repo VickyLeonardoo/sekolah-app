@@ -55,7 +55,7 @@
                             {{ $class->grade }} {{ $class->name }} /
                             {{ $academicYear->start_year }} - {{ $academicYear->end_year }}
                         </h3>
-                        <button onclick="openHomeroomTeacherModal()"
+                        {{-- <button onclick="openHomeroomTeacherModal()"
                             class="text-indigo-600 hover:bg-indigo-100 rounded-full p-2 transition duration-300"
                             title="Edit Wali Kelas">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
@@ -63,16 +63,16 @@
                                 <path
                                     d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                             </svg>
-                        </button>
+                        </button> --}}
                     </div>
                     <p class="text-gray-600"><strong>Jurusan:</strong> {{ $class->major->name }}</p>
                     <p class="text-gray-600"><strong>Maksimal Siswa:</strong> {{ $class->max_student }}</p>
-                    <p class="text-gray-600">
+                    {{-- <p class="text-gray-600">
                         <strong>Wali Kelas:</strong>
                         <span id="currentHomeroomTeacher">
                             {{ $currentTeacher == null ? 'Belum ditentukan':$currentTeacher->teacher->user->name }}
                         </span>
-                    </p>
+                    </p> --}}
                 </div>
             </div>
 

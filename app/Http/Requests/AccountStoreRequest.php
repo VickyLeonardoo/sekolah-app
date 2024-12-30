@@ -27,6 +27,7 @@ class AccountStoreRequest extends FormRequest
             'phone' => ['required','unique:users,phone'],
             'identity_no' => ['required','unique:users,identity_no'],
             'position' => ['required'],
+            'role' => ['required'],
         ];
     }
 
@@ -41,6 +42,7 @@ class AccountStoreRequest extends FormRequest
             'identity_no.required' => __('Nomor Induk Pegawai (NIP) harus diisi'),
             'identity_no.unique' => __('Nomor Induk Pegawai sudah terdaftar'),
             'position.required' => __('Jabatan harus diisi'),
+            'role.required' => __('Role harus diisi'),
         ];
     }
 }

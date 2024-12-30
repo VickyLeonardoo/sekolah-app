@@ -57,6 +57,16 @@ class AccountController extends Controller
     {
         $data = $request->validated();
        
+
+        if ($request->role == 'principal') {
+            $checkExistsPrincipal = User::whereHas('roles', function ($query) {
+                $query->where('name', 'principal');
+            })->first();
+            if ($checkExistsPrincipal) {
+                return redirect()->back()->withErrors('Gagal, tidak dapat membuat lebih dari satu akun kepala sekolah. Arsipkan terlebih dahulu akun yang telah ada')->withInput();
+            }
+        }
+       
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -67,7 +77,7 @@ class AccountController extends Controller
             'is_internal' => true,
         ]);
 
-        $user->assignRole('admin');
+        $user->assignRole($data['role']);
 
         return redirect()->route('account.index')->with('success','Berhasil menambahkan data akun');
 
@@ -88,8 +98,9 @@ class AccountController extends Controller
      */
     public function edit(User $account)
     {
+        $roleName = $account->getRoleNames();
         return view('account.edit',[
-            'user' => $account
+            'user' => $account,
         ]);
     }
 
@@ -99,6 +110,19 @@ class AccountController extends Controller
     public function update(AccountUpdateRequest $request, User $account)
     {
         $validated = $request->validated(); // Mengambil data yang telah divalidasi.
+
+        if ($request->role == 'principal') {
+            $checkExistsPrincipal = User::whereHas('roles', function ($query) {
+                $query->where('name', 'principal');
+            })
+            ->where('id', '!=', $account->id) // Kecualikan pengguna yang sedang diupdate
+            ->first();
+
+            if ($checkExistsPrincipal) {
+                return redirect()->back()->withErrors('Gagal, tidak dapat membuat lebih dari satu akun kepala sekolah. Arsipkan terlebih dahulu akun yang telah ada')->withInput();
+            }
+        }
+
         $account->update($validated);
 
         return redirect()->back()->with('success', 'Account updated successfully.');

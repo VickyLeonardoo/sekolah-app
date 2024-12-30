@@ -165,7 +165,7 @@ class StudentController extends Controller
             $student = Student::with('major')
                 ->where('identity_no', $request->identity_no)
                 ->first();
-            if (!$student) {
+            if (!$student) { 
                 return redirect()->back()->with('error', 'Data siswa tidak ditemukan, periksa kembali NISN')->withInput();
             }
             return view('student.information', [
