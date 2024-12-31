@@ -117,8 +117,8 @@
                             class="bg-blue-500 text-white p-3 rounded-xl inline-block mb-6 group-hover:scale-110 transition-transform duration-300">
                             <i data-feather="check-circle" class="h-8 w-8"></i>
                         </div>
-                        <h3 class="text-2xl font-semibold text-gray-800 mb-4">Verifikasi Otomatis</h3>
-                        <p class="text-gray-600">Sistem akan memverifikasi pembayaran Anda secara otomatis.</p>
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-4">Verifikasi</h3>
+                        <p class="text-gray-600">Petugas akan memverifikasi pembayaran Anda.</p>
                     </div>
                 </div>
             </div>
