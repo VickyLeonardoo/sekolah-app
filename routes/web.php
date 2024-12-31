@@ -93,22 +93,22 @@ Route::middleware('auth')->group(function () {
         ->middleware('role:superadmin|admin');
 
     Route::put('/transaction/success/{transaction:id}',[TransactionController::class, 'set_approved'])
-        ->middleware('role:superadmin|admin')
+        ->middleware('role:superadmin|admin|principal')
         ->name('transaction.approve');
 
     Route::put('/transaction/reject/{transaction:id}',[TransactionController::class, 'set_rejected'])
-        ->middleware('role:superadmin|admin')
+        ->middleware('role:superadmin|admin|principal')
         ->name('transaction.reject');
 
     Route::get('/transaction/history',[TransactionController::class, 'history'])
-        ->middleware('role:superadmin|admin')
+        ->middleware('role:superadmin|admin|principal')
         ->name('transaction.history');
 
     Route::resource('transaction', TransactionController::class)
-        ->middleware('role:superadmin|admin');
+        ->middleware('role:superadmin|admin|principal');
 
     Route::resource('report',ReportController::class)
-        ->middleware('role:superadmin|admin');
+        ->middleware('role:superadmin|admin|principal');
 
     Route::resource('account',AccountController::class)
         ->middleware('role:superadmin|admin');

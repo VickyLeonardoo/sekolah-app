@@ -31,7 +31,7 @@
         </style>
     </head>
     <body class="font-sans antialiased">
-        @role(['superadmin','admin','teacher'])
+        @role(['superadmin','admin','principal'])
             <div class="min-h-screen bg-indigo-100 dark:bg-gray-900">
         @endrole
         @role('parent')
@@ -40,7 +40,7 @@
         @endrole
             {{-- Untuk pengguna yang sudah login berdasarkan role --}}
             @auth
-            @role(['superadmin', 'manager', 'admin', 'hr'])
+            @role(['superadmin', 'principal'])
                 @include('layouts.navigation')
             @endrole
 

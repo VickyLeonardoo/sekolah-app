@@ -30,8 +30,6 @@ class HomeController extends Controller
     }
 
     public function index_admin(){
-        $teachersCount = Teacher::count();
-
         $todayTransactionsCount = Transaction::where('status', 'pending')
             ->whereDate('created_at', Carbon::today())
             ->whereNotNull('proof_image')
@@ -44,8 +42,11 @@ class HomeController extends Controller
 
         $totalPendingTransactionCount = Transaction::where('status','pending')->whereNotNull('proof_image')->count();
 
+        $studentsCount = Student::where('is_graduated', false)->count();
+
+        $studentGraduateCount = Student::where('is_graduated', true)->count();
          return view('dashboard',[
-             'teachersCount' => $teachersCount,
+             'studentsCount' => $studentsCount,
              'todayTransactionsCount' => $todayTransactionsCount,
              'totalPendingTransactionCount' => $totalPendingTransactionCount,
              'transactions' => $todayTransactions 

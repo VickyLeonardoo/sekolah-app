@@ -30,7 +30,7 @@
                         <div class="bg-green-100 p-3 rounded-full">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M13 5.5a4 4 0 11-8 0 4 4 0 018 0zM5 11a4 4 0 100-8 4 4 0 000 8z" />
-                            </svg>
+                            </svg> 
                         </div>
                     </div>
                     
@@ -40,8 +40,8 @@
                 <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg p-6 transform transition-all hover:scale-105">
                     <div class="flex items-center justify-between">
                         <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Guru</h3>
-                            <p class="text-3xl font-bold text-purple-600 mt-2">{{ $teachersCount }}</p>
+                            <h3 class="text-lg font-semibold text-gray-800">Siswa</h3>
+                            <p class="text-3xl font-bold text-purple-600 mt-2">{{ $studentsCount }}</p>
                         </div>
                         <div class="bg-purple-100 p-3 rounded-full">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">

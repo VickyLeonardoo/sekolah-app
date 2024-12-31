@@ -13,6 +13,7 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    @role(['admin','superadmin'])
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
@@ -40,6 +41,20 @@
                     <x-nav-link :href="route('report.index')" :active="request()->routeIs('report*')">
                         {{ __('Laporan') }}
                     </x-nav-link>
+                    @endrole
+                    @role(['principal'])
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        {{ __('Dashboard') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('transaction.index')" :active="request()->routeIs('transaction*')">
+                        {{ __('Transaksi') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('report.index')" :active="request()->routeIs('report*')">
+                        {{ __('Laporan') }}
+                    </x-nav-link>
+                    @endrole
                 </div>
             </div>
 
@@ -118,7 +133,7 @@
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
                 </form>
-            </div>
+            </div> 
         </div>
     </div>
 </nav>
