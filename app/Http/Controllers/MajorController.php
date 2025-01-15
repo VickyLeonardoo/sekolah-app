@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MajorStoreRequest;
+use App\Http\Requests\MajorUpdateRequest;
 use App\Models\Major;
+use App\Models\SchoolClass;
 use Illuminate\Http\Request;
 
 class MajorController extends Controller
@@ -78,9 +80,13 @@ class MajorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Major $major)
+    public function update(MajorUpdateRequest $request, Major $major)
     {
-        //
+        $data = $request->validated();
+        $major->update($data);
+        $major->save();
+
+        return redirect()->route('major.index')->with('success','Berhasil mengubah data jurusan');
     }
 
     /**
@@ -88,6 +94,13 @@ class MajorController extends Controller
      */
     public function destroy(Major $major)
     {
-        //
+        $checkClass = SchoolClass::where('major_id',$major->id)->first();
+        if ($checkClass) {
+            return redirect()->route('major.index')->with('error','Jurusan tidak bisa dihapus karena masih memiliki kelas');
+        }else{
+            $major->delete();
+            return redirect()->route('major.index')->with('success','Berhasil menghapus data jurusan');
+        }
+        
     }
 }

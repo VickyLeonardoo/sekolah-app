@@ -53,8 +53,9 @@
                 </div>
             @endif
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-10 flex flex-col gap-y-5">
-                <form method="POST" action="{{ route('major.store') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('major.update',$major) }}" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
                     {{-- name, email, password, phone, identity_no --}}
                     <div class="mt-4">
                         <x-input-label for="code" :value="__('Kode Jurusan')" />

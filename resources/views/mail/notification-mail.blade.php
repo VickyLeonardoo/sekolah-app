@@ -7,21 +7,21 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     </style>
-</head>
+</head> 
 <body style="font-family: 'Inter', sans-serif; background-color: #f3f4f6; margin: 0; padding: 0;">
     <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
         <!-- Card Container -->
         <div style="background-color: #ffffff; border-radius: 12px; padding: 32px; margin-top: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
             <!-- Header with School Logo -->
-            <div style="text-align: center; margin-bottom: 24px;">
-                <img src="{{ asset('images/logo.png') }}" alt="School Logo" style="height: 60px; margin-bottom: 16px;">
+            <div style="text-align: center; margin-bottom: 24px;"> 
+                {{-- <img src="{{ asset('asset/img/favico.png') }}" alt="School Logo" style="height: 60px; margin-bottom: 16px;"> --}}
                 <div style="height: 2px; background-color: #e5e7eb; margin: 16px 0;"></div>
             </div>
 
             <!-- Main Content -->
             <div style="color: #1f2937;">
                 <h1 style="color: #374151; font-size: 24px; font-weight: 600; margin-bottom: 16px; text-align: center;">
-                    Notifikasi Pembayaran SPP
+                    Pengingat Pembayaran SPP
                 </h1>
 
                 <p style="margin-bottom: 16px; color: #4b5563; font-size: 16px;">

@@ -15,7 +15,7 @@ class NotifyCron extends Command
 {
     /**
      * The name and signature of the console command.
-     *
+     * 
      * @var string
      */
     protected $signature = 'notify:cron';
@@ -51,12 +51,12 @@ class NotifyCron extends Command
             
             if (!$student) {
                 continue;
-            }
+            } 
 
             $parent_accounts = User::where('identity_no', $student->identity_no)
                                 ->whereNotNull('email')
                                 ->pluck('email')
-                                ->toArray();
+                                ->toArray(); 
             
             $parent_emails = array_merge($parent_emails, $parent_accounts);
             $student_data = $student; // Simpan data student terakhir

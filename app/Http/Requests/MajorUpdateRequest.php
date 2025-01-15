@@ -27,7 +27,7 @@ class MajorUpdateRequest extends FormRequest
 
         return [
             'name' => ['required'],
-            'code' => ['required',Rule::unique('users')->ignore($majorId)],
+            'code' => ['required',Rule::unique('majors')->ignore($majorId)],
             'description' => ['sometimes'],
         ];
     }
